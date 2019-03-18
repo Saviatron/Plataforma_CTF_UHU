@@ -25,6 +25,8 @@ Objetivos:
 - Redactar documentación del funcionamiento del sistema. 
 - Implantación de la plataforma en la web.
 
+Para estar al tanto de la evolución del proyecto, puede vistar la página:
+http://opendatalab.uhu.es/index.php/Captura_la_bandera
 
 ## Getting Started
 
