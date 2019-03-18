@@ -38,7 +38,7 @@ Las carpetas "ctf_monitor" y "ctf_servidor" corresponden a los 2 proyectos desar
 
 La carpeta "lib" contiene todas las dependencias de los proyectos. 
 
-```
+``
 - JRE: JavaSE-1.8
 
 - JADE: JAVA Agent DEvelopment Framework is an open source platform for peer-to-peer agent based applications.
@@ -55,7 +55,7 @@ Minim is licensed under the GNU Lesser General Public License (LGPL), a copy of 
 distribution.
 Link: http://code.compartmental.net/minim/
 
-```
+``
 
 ### Installing
 
