@@ -37,15 +37,20 @@ Las carpetas "ctf_monitor" y "ctf_servidor" corresponden a los 2 proyectos desar
 La carpeta "lib" contiene todas las dependencias de los proyectos. 
 
 ```
+- JRE: JavaSE-1.8
+
 - JADE: JAVA Agent DEvelopment Framework is an open source platform for peer-to-peer agent based applications.
 Link: http://jade.tilab.com/
 
-- Processing: Processing is a flexible software sketchbook and a language for learning how to code within the context of the visual arts.
+- Processing: Processing is a flexible software sketchbook and a language for learning how to code within the 
+context of the visual arts.
 » Free to download and open source
 Link: https://processing.org/
 
-- Minim: Minim is an audio library that uses the JavaSound API, a bit of Tritonus, and Javazoom’s MP3SPI to provide an easy to use audio library for people developing in the Processing environment.
-Minim is licensed under the GNU Lesser General Public License (LGPL), a copy of which is included with the distribution.
+- Minim: Minim is an audio library that uses the JavaSound API, a bit of Tritonus, and Javazoom’s MP3SPI to 
+provide an easy to use audio library for people developing in the Processing environment.
+Minim is licensed under the GNU Lesser General Public License (LGPL), a copy of which is included with the 
+distribution.
 Link: http://code.compartmental.net/minim/
 
 ```
