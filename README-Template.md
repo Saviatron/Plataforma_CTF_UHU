@@ -1,14 +1,40 @@
-# Project Title
+# Plataforma CTF - UHU
 
-One Paragraph of project description goes here
+El proyecto a desarrollar se puede encajar, principalmente, dentro del proyecto docente del área de de Ciencias de la Computación e Inteligencia Artificial. 
+
+Éste va a consistir en el desarrollo de una plataforma multiagente donde poner en práctica todas las ideas y algoritmos desarrollados durante los estudios de Grado en Ingeniería Informática. 
+
+En concreto, para la asignatura de Inteligencia Artificial, los alumnos lo usarán para experimentar con los principales algoritmos de búsqueda estudiados. 
+
+Para la asignatura Sistemas Inteligentes, los alumnos podrán desarrollar por completo un agente software, o varios, para poner en práctica los conocimientos aprendidos en la asignatura. 
+
+Sobre la plataforma, se desarrollará en Java. 
+Simulará el juego "Capture the Flag". 
+El servidor será un agente sofware JADE. 
+Recibirá jugadores y simulará las partidas. 
+También se desarrollará un agente gráfico, para ver la partida. 
+La comunicación entre agentes se basará en la biblioteca JADE. 
+La parte gráfica se desarrollará mediante la biblioteca PROCESSING.
+
+
+Objetivos: 
+- Estudio y desarrollo de la plataforma base y arquitectura del sistema. 
+- Integración con entorno gráfico. 
+- Desarrollo de esquemas de programación. 
+- Elaboración de algunas prácticas "tipo". 
+- Redactar documentación del funcionamiento del sistema. 
+- Implantación de la plataforma en la web.
+
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Las carpetas "ctf_monitor" y "ctf_servidor" corresponden a los 2 proyectos desarrollados en Eclipse Mars. 
+- El proyecto "ctf_servidor" corresponde al agente servidor que administrará las partidas.
+- El proyecto "ctf_monitor" corresponde al agente monitor, que se conectará al servidor y visualizará la partida.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+La carpeta "lib" contiene todas las dependencias de los proyectos. 
 
 ```
 Give examples
