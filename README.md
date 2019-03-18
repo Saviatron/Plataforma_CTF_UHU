@@ -33,9 +33,7 @@ http://opendatalab.uhu.es/index.php/Captura_la_bandera
 Archivo con las instrucciones de la plataforma: [Instrucciones.pdf](Instrucciones.pdf)
 
 ## Demo Video
-Youtube: [![Alt text for your video](https://img.youtu.be/K_xbm8FObIE/0.jpg)](https://youtu.be/K_xbm8FObIE)
-https://www.youtube.com/watch?v=K_xbm8FObIE&feature=youtu.be
-https://youtu.be/K_xbm8FObIE
+Youtube: https://youtu.be/K_xbm8FObIE
 
 Fuente: https://www.iteramos.com/pregunta/16559/como-incrustar-un-video-en-github-readmemd
 
