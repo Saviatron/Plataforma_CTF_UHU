@@ -19,7 +19,8 @@ La parte gráfica se desarrollará mediante la biblioteca PROCESSING.
 
 Objetivos: 
 - Estudio y desarrollo de la plataforma base y arquitectura del sistema. 
-- Integración con entorno gráfico. - Desarrollo de esquemas de programación. 
+- Integración con entorno gráfico. 
+- Desarrollo de esquemas de programación. 
 - Elaboración de algunas prácticas "tipo". 
 - Redactar documentación del funcionamiento del sistema. 
 - Implantación de la plataforma en la web.
