@@ -9,17 +9,11 @@ En concreto, para la asignatura de Inteligencia Artificial, los alumnos lo usar�
 Para la asignatura Sistemas Inteligentes, los alumnos podrán desarrollar por completo un agente software, o varios, para poner en práctica los conocimientos aprendidos en la asignatura. 
 
 Sobre la plataforma, se desarrollará en Java. 
-
 Simulará el juego "Capture the Flag". 
-
 El servidor será un agente sofware JADE. 
-
 Recibirá jugadores y simulará las partidas. 
-
 También se desarrollará un agente gráfico, para ver la partida. 
-
 La comunicación entre agentes se basará en la biblioteca JADE. 
-
 La parte gráfica se desarrollará mediante la biblioteca PROCESSING.
 
 
