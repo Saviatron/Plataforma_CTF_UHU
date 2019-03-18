@@ -35,8 +35,6 @@ Archivo con las instrucciones de la plataforma: [Instrucciones.pdf](Instruccione
 ## Demo Video
 Youtube: https://youtu.be/K_xbm8FObIE
 
-Fuente: https://www.iteramos.com/pregunta/16559/como-incrustar-un-video-en-github-readmemd
-
 ## Getting Started
 
 Las carpetas "ctf_monitor" y "ctf_servidor" corresponden a los 2 proyectos desarrollados en Eclipse Mars. 
