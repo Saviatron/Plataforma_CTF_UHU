@@ -82,11 +82,11 @@ Para ello:
 5. Si todo ha ido bien, veremos la partida. Solo queda lanzar los jugadores. Para ello, ejecutamos el .bat deseado de los jugadores.
 
 
-## Versioning
+## Version
 
 Version 5.0
 
-## Authors
+## Author
 
 * **Javier Martín Moreno** 
 
