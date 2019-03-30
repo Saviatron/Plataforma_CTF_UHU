@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-
 package config;
 
 public interface Config {
@@ -51,7 +50,7 @@ public interface Config {
 	public static final String ESTE = "E";
 	public static final String OESTE = "W";
 	public static final String NORTE = "N";
-	public static final String SUR="S";
+	public static final String SUR = "S";
 	public static final String NE = "NE";
 	public static final String NW = "NW";
 	public static final String SE = "SE";
@@ -76,8 +75,13 @@ public interface Config {
 	public static final int TiempoTick = Integer.parseInt(Propiedades.getPropiedad("TiempoTick"));
 
 	public static double TASA_RECHAZO = Double.parseDouble(Propiedades.getPropiedad("TASA_RECHAZO"));
-	
-	//ORIENTACION RELATIVA
-	public static boolean ORIENTACION_RELATIVA= Boolean.valueOf((Propiedades.getPropiedad("ORIENTACION_RELATIVA")));
+
+	// ORIENTACION RELATIVA
+	public static boolean ORIENTACION_RELATIVA = Boolean.valueOf(Propiedades.getPropiedad("ORIENTACION_RELATIVA"));
+
+	// VISION PARCIAL
+	public static boolean VISION_PARCIAL = Boolean.valueOf(Propiedades.getPropiedad("VISION_PARCIAL"));
+	public static int ALCANCE = Integer.parseInt(Propiedades.getPropiedad("ALCANCE"));
+	public static int ANCHO = Integer.parseInt(Propiedades.getPropiedad("ANCHO"));
 
 }

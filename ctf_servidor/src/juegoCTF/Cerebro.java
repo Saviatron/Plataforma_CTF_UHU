@@ -35,20 +35,20 @@ import juegoCTF.Posicion;
 /**
  * CLASE QUE GUARDA LA INFORMACION DE LA PARTIDA
  */
-public class Cerebro {
+public class Cerebro implements Config {
 
 	public EscribirFichero partidaTXT = new EscribirFichero("Partida");
 	public Estadisticas estadisticas = new Estadisticas();
 
 	private Tablero_Lineal tablero;
 
-	private Posicion[] banderas = new Posicion[Config.NUM_EQUIPOS];
-	private Posicion[] bases = new Posicion[Config.NUM_EQUIPOS];
-	private Posicion[] entradas = new Posicion[Config.NUM_EQUIPOS];
+	private Posicion[] banderas = new Posicion[NUM_EQUIPOS];
+	private Posicion[] bases = new Posicion[NUM_EQUIPOS];
+	private Posicion[] entradas = new Posicion[NUM_EQUIPOS];
 	private ArrayList<Posicion> muertes = new ArrayList<Posicion>();
 
 	@SuppressWarnings("unchecked")
-	private ArrayList<Jugador>[] jugadores = (ArrayList<Jugador>[]) new ArrayList[Config.NUM_EQUIPOS];
+	private ArrayList<Jugador>[] jugadores = (ArrayList<Jugador>[]) new ArrayList[NUM_EQUIPOS];
 
 	private List<AID> monitores = new ArrayList<AID>();
 
@@ -131,14 +131,14 @@ public class Cerebro {
 	 ***********************************************************/
 
 	public void addJugador(int Equipo, Jugador j) {
-		if (jugadores[Equipo].size() < Config.MAX_JUGADORES_EQ)
+		if (jugadores[Equipo].size() < MAX_JUGADORES_EQ)
 			jugadores[Equipo].add(j);
 		else
 			System.out.println("Num. MAXIMO de jugadores en equipo " + Equipo);
 	}
 
 	public boolean MaxJugadores(int Equipo, Jugador j) {
-		if (jugadores[Equipo].size() < Config.MAX_JUGADORES_EQ) {
+		if (jugadores[Equipo].size() < MAX_JUGADORES_EQ) {
 			return true;
 		} else {
 			System.out.println("Num. MAXIMO de jugadores para: " + j.getName());
@@ -148,7 +148,7 @@ public class Cerebro {
 
 	public Jugador getJugador(AID aid) {
 		List<Jugador> lista = new ArrayList<Jugador>();
-		for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+		for (int i = 0; i < NUM_EQUIPOS; i++)
 			lista.addAll(jugadores[i]);
 
 		Iterator<Jugador> i = lista.iterator();
@@ -160,18 +160,6 @@ public class Cerebro {
 
 		return null;
 	}
-
-	/*
-	 * public Jugador getJugador(int equipo, AID aid) { List<Jugador> lista =
-	 * null; switch (equipo) { case Config.EQUIPO_AZUL: lista = equipoAzul;
-	 * break; case Config.EQUIPO_ROJO: lista = equipoRojo; default: return null;
-	 * }
-	 * 
-	 * Iterator<Jugador> i = lista.iterator(); while (i.hasNext()) { Jugador j =
-	 * i.next(); if (aid.getName().equalsIgnoreCase(j.getName())) return j; }
-	 * 
-	 * return null; }
-	 */
 
 	public Jugador getJugador(int equipo, Posicion pos) {
 		List<Jugador> lista = jugadores[equipo];
@@ -188,7 +176,7 @@ public class Cerebro {
 
 	public Jugador getEnemigo(int equipo, Posicion pos) {
 		List<Jugador> lista = new ArrayList<Jugador>();
-		for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+		for (int i = 0; i < NUM_EQUIPOS; i++)
 			if (i != equipo)
 				lista.addAll(jugadores[i]);
 
@@ -244,31 +232,31 @@ public class Cerebro {
 		int Y = j.getPosicion().getY();
 		if (!j.getAccion().isNula() && !j.getAccion().isIncorrecta() && !j.getAccion().isAbandonar())
 			switch (j.getOrientacion()) {
-			case Config.NORTE:
+			case NORTE:
 				Y -= 1;
 				break;
-			case Config.NE:
+			case NE:
 				X += 1;
 				Y -= 1;
 				break;
-			case Config.ESTE:
+			case ESTE:
 				X += 1;
 				break;
-			case Config.SE:
+			case SE:
 				X += 1;
 				Y += 1;
 				break;
-			case Config.SUR:
+			case SUR:
 				Y += 1;
 				break;
-			case Config.SW:
+			case SW:
 				X -= 1;
 				Y += 1;
 				break;
-			case Config.OESTE:
+			case OESTE:
 				X -= 1;
 				break;
-			case Config.NW:
+			case NW:
 				X -= 1;
 				Y -= 1;
 				break;
@@ -318,92 +306,10 @@ public class Cerebro {
 	public String toString() {
 		return null;
 
-		/*
-		 * char[] m = tablero.TableroCompleto(); int ANCHOX = tablero.getDX();
-		 * 
-		 * for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-		 * rellenarJugadores(jugadores[i], m);
-		 * 
-		 * StringBuffer sb = new StringBuffer(); for (int j = 0; j <
-		 * tablero.getDY(); j++) { for (int i = 0; i < tablero.getDX(); i++)
-		 * sb.append(m[i + ANCHOX * j]); sb.append('\n'); } return
-		 * sb.toString();
-		 */
-
 	}
 
-	/*
-	 * public String TableroParcial(Posicion pos) {
-	 * 
-	 * int dx = Config.VENTANAX / 2; int dy = Config.VENTANAY / 2;
-	 * 
-	 * int esqx = pos.getX() - dx; int esqy = pos.getY() - dy;
-	 * 
-	 * char[] m = tablero.TableroParcial(esqx, esqy, Config.VENTANAX,
-	 * Config.VENTANAY); rellenarVentana(equipoAzul, m, esqx, esqy, esqx +
-	 * Config.VENTANAX, esqy + Config.VENTANAY); rellenarVentana(equipoRojo, m,
-	 * esqx, esqy, esqx + Config.VENTANAX, esqy + Config.VENTANAY);
-	 * 
-	 * StringBuffer sb = new StringBuffer(); sb.append(pos.getX());
-	 * sb.append(","); sb.append(pos.getY()); sb.append(",");
-	 * 
-	 * for (int i = 0; i < m.length; i++) sb.append(m[i]);
-	 * 
-	 * return sb.toString(); }
-	 */
-
-	/*
-	 * private void rellenarVentana(List<Jugador> equipo, char[] mapa, int x1,
-	 * int y1, int x2, int y2) {
-	 * 
-	 * // AQUI HAY QYE METERLE LOS JUGADORES Iterator<Jugador> it =
-	 * equipo.iterator(); while (it.hasNext()) { Jugador j = it.next();
-	 * 
-	 * int jx = j.getPosicion().getX(); int jy = j.getPosicion().getY();
-	 * 
-	 * // SI ESTA DENTRO DE LA VENTANA if (jx >= x1 && jx <= x2 && jy >= y1 &&
-	 * jy <= y2) { int indice = (jx - x1) + (jy - y1) * Config.VENTANAX; if
-	 * (j.isTieneBanderaContraria()) mapa[indice] =
-	 * Config.JUGADOR_AZUL_BANDERACONT; else if (j.isTieneBanderaPropia())
-	 * mapa[indice] = Config.JUGADOR_AZUL_BANDERAPROP; else mapa[indice] =
-	 * Config.JUGADOR_AZUL; } }
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public String TableroCompleto1() { return
-	 * tablero.enviarTableroCompleto(); }
-	 */
-
-	/*
-	 * public String PintarVentana(Posicion pos) {
-	 * 
-	 * int dx = pos.getX() - Config.VENTANAX / 2; int dy = pos.getY() -
-	 * Config.VENTANAY / 2;
-	 * 
-	 * char[] m = tablero.enviarTableroParcial(dx, dy, Config.VENTANAX,
-	 * Config.VENTANAY).toCharArray();
-	 * 
-	 * int ANCHOX = tablero.getDX();
-	 * 
-	 * m[baseB.getX() + ANCHOX * baseB.getY()] = Config.BASE_AZUL;
-	 * m[baseR.getX() + ANCHOX * baseR.getY()] = Config.BASE_ROJA;
-	 * m[banderaB.getX() + ANCHOX * banderaB.getY()] = Config.BANDERA_AZUL;
-	 * m[banderaR.getX() + ANCHOX * banderaR.getY()] = Config.BANDERA_ROJA;
-	 * 
-	 * rellenarMapa(equipoAzul, m); rellenarMapa(equipoRojo, m);
-	 * 
-	 * StringBuffer sb = new StringBuffer(); for (int j = 0; j <
-	 * Config.VENTANAY; j++) { for (int i = 0; i < Config.VENTANAX; i++)
-	 * sb.append(m[(dx + i) + ANCHOX * (j + dy)]); sb.append('\n'); } return
-	 * sb.toString();
-	 * 
-	 * }
-	 */
-
 	public String getVERSION() {
-		return Config.VERSION;
+		return VERSION;
 	}
 
 	public void setXXVERSION(String vERSION) {
@@ -417,10 +323,6 @@ public class Cerebro {
 	public int DimY() {
 		return tablero.getDY();
 	}
-
-	/*
-	 * public String SoloMapa() { return tablero.TableroCompleto().toString(); }
-	 */
 
 	/************************************************************
 	 ****************************************** METODOS ACCIONES
@@ -447,34 +349,6 @@ public class Cerebro {
 	 ************************************* METODOS ENVIAR TABLERO
 	 ***********************************************************/
 
-	/*
-	 * public String EnviarTableroaMonitor() {
-	 * 
-	 * char[] m = tablero.TableroCompleto();
-	 * 
-	 * int ANCHOX = tablero.getDX();
-	 * 
-	 * m[baseA.getX() + ANCHOX * baseA.getY()] = Config.BASE_AZUL;
-	 * m[baseR.getX() + ANCHOX * baseR.getY()] = Config.BASE_ROJA;
-	 * m[banderaA.getX() + ANCHOX * banderaA.getY()] = Config.BANDERA_AZUL;
-	 * m[banderaR.getX() + ANCHOX * banderaR.getY()] = Config.BANDERA_ROJA;
-	 * 
-	 * 
-	 * rellenarMuertes(m); rellenarBaseBandera(m); for (int i = 0; i <
-	 * Config.MAX_EQUIPOS; i++) rellenarJugadores(jugadores.get(i), m);
-	 * 
-	 * 
-	 * int fdf = 0; for (int i = 0; i < tablero.getDY(); i++) { for (int j = 0;
-	 * j < tablero.getDX(); j++) { System.out.print(m[fdf]); fdf++; }
-	 * System.out.println(); } System.out.println();
-	 * 
-	 * 
-	 * StringBuffer sb = new StringBuffer(); for (int i = 0; i < m.length; i++)
-	 * sb.append(m[i]);
-	 * 
-	 * return sb.toString(); }
-	 */
-
 	public String EnviarTableroaMonitor() {
 		// TODO
 
@@ -487,7 +361,7 @@ public class Cerebro {
 		sb.append(",");
 		sb.append(DimY());
 		sb.append(",");
-		sb.append(Config.NUM_EQUIPOS);
+		sb.append(NUM_EQUIPOS);
 		sb.append(",");
 		sb.append(tablero.TableroCompleto());
 		sb.append("\n");
@@ -633,76 +507,85 @@ public class Cerebro {
 
 		StringBuffer sb = new StringBuffer();
 
+		sb.append(ORIENTACION_RELATIVA + ",");
+		sb.append(VISION_PARCIAL + ",");
+
 		sb.append(tablero.getDX() + ",");
 		sb.append(tablero.getDY() + ",");
 
 		sb.append(jug.getPosicion().getX() + ",");
 		sb.append(jug.getPosicion().getY() + ",");
 
-		sb.append(Config.NUM_EQUIPOS + ",");
+		sb.append(NUM_EQUIPOS + ",");
+		if (!VISION_PARCIAL) {
 
-		sb.append(tablero.TableroCompleto());
+			sb.append(tablero.TableroCompleto());
 
-		sb.append("\n");
+			sb.append("\n");
 
-		for (int i = 0; i < entradas.length; i++) {
-			if (entradas[i] != null) {
-				sb.append("Entrada");
-				sb.append(",");
-				sb.append(i);
-				sb.append(",");
-				sb.append(entradas[i].getX());
-				sb.append(",");
-				sb.append(entradas[i].getY());
-				sb.append("\n");
-			}
-		}
-		for (int i = 0; i < banderas.length; i++) {
-			if (banderas[i] != null) {
-				sb.append("Bandera");
-				sb.append(",");
-				sb.append(i);
-				sb.append(",");
-				sb.append(banderas[i].getX());
-				sb.append(",");
-				sb.append(banderas[i].getY());
-				sb.append("\n");
-			}
-		}
-		for (int i = 0; i < bases.length; i++) {
-			if (bases[i] != null) {
-				sb.append("Base");
-				sb.append(",");
-				sb.append(i);
-				sb.append(",");
-				sb.append(bases[i].getX());
-				sb.append(",");
-				sb.append(bases[i].getY());
-				sb.append("\n");
-			}
-		}
-		for (int i = 0; i < jugadores.length; i++) {
-			if (jugadores[i] != null) {
-				for (int j = 0; j < jugadores[i].size(); j++) {
-					sb.append("Jugador");
+			for (int i = 0; i < entradas.length; i++) {
+				if (entradas[i] != null) {
+					sb.append("Entrada");
 					sb.append(",");
 					sb.append(i);
 					sb.append(",");
-					sb.append(jugadores[i].get(j).getPosicion().getX());
+					sb.append(entradas[i].getX());
 					sb.append(",");
-					sb.append(jugadores[i].get(j).getPosicion().getY());
-					// sb.append(",");
-					// sb.append(jugadores[i].get(j).getAccion());
+					sb.append(entradas[i].getY());
 					sb.append("\n");
 				}
 			}
-		}
-		for (int i = 0; i < muertes.size(); i++) {
-			sb.append("Muerte");
-			sb.append(",");
-			sb.append(muertes.get(i).getX());
-			sb.append(",");
-			sb.append(muertes.get(i).getY());
+			for (int i = 0; i < banderas.length; i++) {
+				if (banderas[i] != null) {
+					sb.append("Bandera");
+					sb.append(",");
+					sb.append(i);
+					sb.append(",");
+					sb.append(banderas[i].getX());
+					sb.append(",");
+					sb.append(banderas[i].getY());
+					sb.append("\n");
+				}
+			}
+			for (int i = 0; i < bases.length; i++) {
+				if (bases[i] != null) {
+					sb.append("Base");
+					sb.append(",");
+					sb.append(i);
+					sb.append(",");
+					sb.append(bases[i].getX());
+					sb.append(",");
+					sb.append(bases[i].getY());
+					sb.append("\n");
+				}
+			}
+			for (int i = 0; i < jugadores.length; i++) {
+				if (jugadores[i] != null) {
+					for (int j = 0; j < jugadores[i].size(); j++) {
+						sb.append("Jugador");
+						sb.append(",");
+						sb.append(i);
+						sb.append(",");
+						sb.append(jugadores[i].get(j).getPosicion().getX());
+						sb.append(",");
+						sb.append(jugadores[i].get(j).getPosicion().getY());
+						// sb.append(",");
+						// sb.append(jugadores[i].get(j).getAccion());
+						sb.append("\n");
+					}
+				}
+			}
+			for (int i = 0; i < muertes.size(); i++) {
+				sb.append("Muerte");
+				sb.append(",");
+				sb.append(muertes.get(i).getX());
+				sb.append(",");
+				sb.append(muertes.get(i).getY());
+				sb.append("\n");
+			}
+		} else {
+			sb.append(mapaParcial(jug));
+
 			sb.append("\n");
 		}
 
@@ -716,141 +599,170 @@ public class Cerebro {
 		sb.append(jug.getPosicion().getX());
 		sb.append(",");
 		sb.append(jug.getPosicion().getY());
-		sb.append("\n");
-		for (int i = 0; i < entradas.length; i++) {
-			if (entradas[i] != null) {
-				sb.append("Entrada");
-				sb.append(",");
-				sb.append(i);
-				sb.append(",");
-				sb.append(entradas[i].getX());
-				sb.append(",");
-				sb.append(entradas[i].getY());
-				sb.append("\n");
-			}
-		}
-		for (int i = 0; i < banderas.length; i++) {
-			if (banderas[i] != null) {
-				sb.append("Bandera");
-				sb.append(",");
-				sb.append(i);
-				sb.append(",");
-				sb.append(banderas[i].getX());
-				sb.append(",");
-				sb.append(banderas[i].getY());
-				sb.append("\n");
-			}
-		}
-		for (int i = 0; i < bases.length; i++) {
-			if (bases[i] != null) {
-				sb.append("Base");
-				sb.append(",");
-				sb.append(i);
-				sb.append(",");
-				sb.append(bases[i].getX());
-				sb.append(",");
-				sb.append(bases[i].getY());
-				sb.append("\n");
-			}
-		}
-		for (int i = 0; i < jugadores.length; i++) {
-			if (jugadores[i] != null) {
-				for (int j = 0; j < jugadores[i].size(); j++) {
-					sb.append("Jugador");
+		if (!VISION_PARCIAL) {
+			sb.append("\n");
+			for (int i = 0; i < entradas.length; i++) {
+				if (entradas[i] != null) {
+					sb.append("Entrada");
 					sb.append(",");
 					sb.append(i);
 					sb.append(",");
-					sb.append(jugadores[i].get(j).getPosicion().getX());
+					sb.append(entradas[i].getX());
 					sb.append(",");
-					sb.append(jugadores[i].get(j).getPosicion().getY());
-					// sb.append(",");
-					// sb.append(jugadores[i].get(j).getAccion());
+					sb.append(entradas[i].getY());
 					sb.append("\n");
 				}
 			}
-		}
-		for (int i = 0; i < muertes.size(); i++) {
-			sb.append("Muerte");
-			sb.append(",");
-			sb.append(muertes.get(i).getX());
-			sb.append(",");
-			sb.append(muertes.get(i).getY());
+			for (int i = 0; i < banderas.length; i++) {
+				if (banderas[i] != null) {
+					sb.append("Bandera");
+					sb.append(",");
+					sb.append(i);
+					sb.append(",");
+					sb.append(banderas[i].getX());
+					sb.append(",");
+					sb.append(banderas[i].getY());
+					sb.append("\n");
+				}
+			}
+			for (int i = 0; i < bases.length; i++) {
+				if (bases[i] != null) {
+					sb.append("Base");
+					sb.append(",");
+					sb.append(i);
+					sb.append(",");
+					sb.append(bases[i].getX());
+					sb.append(",");
+					sb.append(bases[i].getY());
+					sb.append("\n");
+				}
+			}
+			for (int i = 0; i < jugadores.length; i++) {
+				if (jugadores[i] != null) {
+					for (int j = 0; j < jugadores[i].size(); j++) {
+						sb.append("Jugador");
+						sb.append(",");
+						sb.append(i);
+						sb.append(",");
+						sb.append(jugadores[i].get(j).getPosicion().getX());
+						sb.append(",");
+						sb.append(jugadores[i].get(j).getPosicion().getY());
+						// sb.append(",");
+						// sb.append(jugadores[i].get(j).getAccion());
+						sb.append("\n");
+					}
+				}
+			}
+			for (int i = 0; i < muertes.size(); i++) {
+				sb.append("Muerte");
+				sb.append(",");
+				sb.append(muertes.get(i).getX());
+				sb.append(",");
+				sb.append(muertes.get(i).getY());
+				sb.append("\n");
+			}
+		} else {
+			sb.append("," + mapaParcial(jug));
 			sb.append("\n");
 		}
 
 		return sb.toString();
 	}
 
-	/*
-	 * public void rellenarJugadores(List<Jugador> equipo, char[] mapa) {
-	 * 
-	 * Iterator<Jugador> it = equipo.iterator(); while (it.hasNext()) { Jugador
-	 * j = it.next(); int indice = j.getPosicion().getX() +
-	 * j.getPosicion().getY() * tablero.getDX();
-	 * 
-	 * switch (j.getEquipo()) { case Config.EQUIPO_AZUL: if
-	 * (j.isTieneBandera(Config.EQUIPO_AZUL)) mapa[indice] =
-	 * Config.JUGADOR_AZUL_BANDERA_AZUL; else if
-	 * (j.isTieneBandera(Config.EQUIPO_ROJO)) mapa[indice] =
-	 * Config.JUGADOR_AZUL_BANDERA_ROJA; else if
-	 * (j.isTieneBandera(Config.EQUIPO_VERDE)) mapa[indice] =
-	 * Config.JUGADOR_AZUL_BANDERA_VERDE; else if
-	 * (j.isTieneBandera(Config.EQUIPO_AMARILLO)) mapa[indice] =
-	 * Config.JUGADOR_AZUL_BANDERA_AMARILLA; else mapa[indice] =
-	 * Config.JUGADOR_AZUL; break; case Config.EQUIPO_ROJO: if
-	 * (j.isTieneBandera(Config.EQUIPO_AZUL)) mapa[indice] =
-	 * Config.JUGADOR_ROJO_BANDERA_AZUL; else if
-	 * (j.isTieneBandera(Config.EQUIPO_ROJO)) mapa[indice] =
-	 * Config.JUGADOR_ROJO_BANDERA_ROJA; else if
-	 * (j.isTieneBandera(Config.EQUIPO_VERDE)) mapa[indice] =
-	 * Config.JUGADOR_ROJO_BANDERA_VERDE; else if
-	 * (j.isTieneBandera(Config.EQUIPO_AMARILLO)) mapa[indice] =
-	 * Config.JUGADOR_ROJO_BANDERA_AMARILLA; else mapa[indice] =
-	 * Config.JUGADOR_ROJO; break; case Config.EQUIPO_VERDE: if
-	 * (j.isTieneBandera(Config.EQUIPO_AZUL)) mapa[indice] =
-	 * Config.JUGADOR_VERDE_BANDERA_AZUL; else if
-	 * (j.isTieneBandera(Config.EQUIPO_ROJO)) mapa[indice] =
-	 * Config.JUGADOR_VERDE_BANDERA_ROJA; else if
-	 * (j.isTieneBandera(Config.EQUIPO_VERDE)) mapa[indice] =
-	 * Config.JUGADOR_VERDE_BANDERA_VERDE; else if
-	 * (j.isTieneBandera(Config.EQUIPO_AMARILLO)) mapa[indice] =
-	 * Config.JUGADOR_VERDE_BANDERA_AMARILLA; else mapa[indice] =
-	 * Config.JUGADOR_VERDE; break; case Config.EQUIPO_AMARILLO: if
-	 * (j.isTieneBandera(Config.EQUIPO_AZUL)) mapa[indice] =
-	 * Config.JUGADOR_AMARILLO_BANDERA_AZUL; else if
-	 * (j.isTieneBandera(Config.EQUIPO_ROJO)) mapa[indice] =
-	 * Config.JUGADOR_AMARILLO_BANDERA_ROJA; else if
-	 * (j.isTieneBandera(Config.EQUIPO_VERDE)) mapa[indice] =
-	 * Config.JUGADOR_AMARILLO_BANDERA_VERDE; else if
-	 * (j.isTieneBandera(Config.EQUIPO_AMARILLO)) mapa[indice] =
-	 * Config.JUGADOR_AMARILLO_BANDERA_AMARILLA; else mapa[indice] =
-	 * Config.JUGADOR_AMARILLO; break; default: mapa[indice] = Config.GAME_OVER;
-	 * } }
-	 * 
-	 * }
-	 * 
-	 * private void rellenarBaseBandera(char[] mm) {
-	 * 
-	 * int ANCHOX = tablero.getDX();
-	 * 
-	 * for (int i = 0; i < Config.NUM_EQUIPOS; i++) { if
-	 * (bases[i].equals(banderas[i])) { mm[bases[i].getX() + ANCHOX *
-	 * bases[i].getY()] = Config.BASE_BANDERA_AZUL; } else { mm[bases[i].getX()
-	 * + ANCHOX * bases[i].getY()] = Config.BASE_AZUL; mm[banderas[i].getX() +
-	 * ANCHOX * banderas[i].getY()] = Config.BANDERA_AZUL; } }
-	 * 
-	 * }
-	 */
-
-	public void rellenarMuertes(char[] mapa) {
-
-		Iterator<Posicion> it = muertes.iterator();
-		while (it.hasNext()) {
-			Posicion m = it.next();
-			int indice = m.getX() + m.getY() * tablero.getDX();
-			mapa[indice] = '*';
+	private String mapaParcial(Jugador jug) {
+		int ancho = (ANCHO / 2);
+		int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+		switch (jug.getOrientacion()) {
+		case NORTE:
+			x1 = jug.getPosicion().getX() - ancho;
+			x2 = jug.getPosicion().getX() + ancho;
+			y1 = jug.getPosicion().getY() - ALCANCE;
+			y2 = jug.getPosicion().getY();
+			break;
+		case NE:
+			x1 = jug.getPosicion().getX();
+			x2 = jug.getPosicion().getX() + ANCHO;
+			y1 = jug.getPosicion().getY() - ANCHO;
+			y2 = jug.getPosicion().getY();
+			break;
+		case ESTE:
+			x1 = jug.getPosicion().getX();
+			x2 = jug.getPosicion().getX() + ALCANCE;
+			y1 = jug.getPosicion().getY() - ancho;
+			y2 = jug.getPosicion().getY() + ancho;
+			break;
+		case SE:
+			x1 = jug.getPosicion().getX();
+			x2 = jug.getPosicion().getX() + ANCHO;
+			y1 = jug.getPosicion().getY();
+			y2 = jug.getPosicion().getY() + ALCANCE;
+			break;
+		case SUR:
+			x1 = jug.getPosicion().getX() - ancho;
+			x2 = jug.getPosicion().getX() + ancho;
+			y1 = jug.getPosicion().getY();
+			y2 = jug.getPosicion().getY() + ALCANCE;
+			break;
+		case SW:
+			x1 = jug.getPosicion().getX() - ANCHO;
+			x2 = jug.getPosicion().getX();
+			y1 = jug.getPosicion().getY();
+			y2 = jug.getPosicion().getY() + ALCANCE;
+			break;
+		case OESTE:
+			x1 = jug.getPosicion().getX() - ALCANCE;
+			x2 = jug.getPosicion().getX();
+			y1 = jug.getPosicion().getY() - ancho;
+			y2 = jug.getPosicion().getY() + ancho;
+			break;
+		case NW:
+			x1 = jug.getPosicion().getX() - ANCHO;
+			x2 = jug.getPosicion().getX();
+			y1 = jug.getPosicion().getY() - ANCHO;
+			y2 = jug.getPosicion().getY();
+			break;
 		}
-		muertes.clear();
+		x1 = (x1 < 0) ? 0 : ((x1 > tablero.getDX() - 1) ? tablero.getDX() - 1 : x1);
+		x2 = (x2 < 0) ? 0 : ((x2 > tablero.getDX() - 1) ? tablero.getDX() - 1 : x2);
+		y1 = (y1 < 0) ? 0 : ((y1 > tablero.getDY() - 1) ? tablero.getDY() - 1 : y1);
+		y2 = (y2 < 0) ? 0 : ((y2 > tablero.getDY() - 1) ? tablero.getDY() - 1 : y2);
+
+		String s = "";
+		s += x1 + "," + x2 + "," + y1 + "," + y2 + ",";
+		for (int j = y1; j <= y2; j++)
+			for (int i = x1; i <= x2; i++)
+				s += tablero.getContenido(i, j);
+		s += "\n";
+		for (int i = 0; i < entradas.length; i++)
+			if (entradas[i] != null && entradas[i].getX() >= x1 && entradas[i].getX() <= x2 && entradas[i].getY() >= y1
+					&& entradas[i].getY() <= y2)
+				s += "Entrada" + "," + i + "," + entradas[i].getX() + "," + entradas[i].getY() + "\n";
+
+		for (int i = 0; i < banderas.length; i++)
+			if (banderas[i] != null && banderas[i].getX() >= x1 && banderas[i].getX() <= x2 && banderas[i].getY() >= y1
+					&& banderas[i].getY() <= y2)
+				s += "Bandera" + "," + i + "," + banderas[i].getX() + "," + banderas[i].getY() + "\n";
+
+		for (int i = 0; i < bases.length; i++)
+			if (bases[i] != null && bases[i].getX() >= x1 && bases[i].getX() <= x2 && bases[i].getY() >= y1
+					&& bases[i].getY() <= y2)
+				s += "Base" + "," + i + "," + bases[i].getX() + "," + bases[i].getY() + "\n";
+
+		for (int i = 0; i < jugadores.length; i++)
+			if (jugadores[i] != null)
+				for (int j = 0; j < jugadores[i].size(); j++)
+					if (jugadores[i].get(j) != null && jugadores[i].get(j).getPosicion().getX() >= x1
+							&& jugadores[i].get(j).getPosicion().getX() <= x2
+							&& jugadores[i].get(j).getPosicion().getY() >= y1
+							&& jugadores[i].get(j).getPosicion().getY() <= y2)
+						s += "Jugador" + "," + i + "," + jugadores[i].get(j).getPosicion().getX() + ","
+								+ jugadores[i].get(j).getPosicion().getY() + "\n";
+
+		for (int i = 0; i < muertes.size(); i++)
+			if (muertes.get(i).getX() >= x1 && muertes.get(i).getX() <= x2 && muertes.get(i).getY() >= y1
+					&& muertes.get(i).getY() <= y2)
+				s += "Muerte" + "," + muertes.get(i).getX() + "," + muertes.get(i).getY() + "\n";
+		return s;
 	}
 
 	/************************************************************
