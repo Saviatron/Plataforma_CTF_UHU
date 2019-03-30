@@ -30,7 +30,7 @@ Para la asignatura Sistemas Inteligentes, los alumnos podrán desarrollar por co
 **Esquema básico:**
 
 ![](C:\Users\JAVIER\Desktop\TFG\GitRepository\Plataforma_CTF_UHU\Esquema_CTF.png)
-![alt text](https://raw.https://github.com/Saviatron/Plataforma_CTF_UHU.git/master/Esquema_CTF.png)
+![alt text](https://raw.https://github.com/Saviatron/Plataforma_CTF_UHU.git/master/to/Esquema_CTF.png)
 
 
 
