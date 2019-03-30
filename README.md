@@ -42,7 +42,8 @@ http://opendatalab.uhu.es/index.php/Captura_la_bandera
 Archivo con las instrucciones de la plataforma: [Instrucciones.pdf](Instrucciones.pdf)
 
 ## Demo Video
-Youtube: https://youtu.be/K_xbm8FObIE
+
+[![](http://img.youtube.com/vi/K_xbm8FObIE/0.jpg)](http://www.youtube.com/watch?v=K_xbm8FObIE "Youtube")
 
 ## Getting Started
 
@@ -90,8 +91,9 @@ Luego, podrá exportarlo como jar para ejecutarlo.
 
 ## Running
 
-Excepcionalmente, se ha subido la carpeta "CTF_2019_v5.0", la cuál contiene todos los archivos necesarios para la ejecución de la plataforma.
+Excepcionalmente, se ha subido la carpeta "CTF_2019_v6.1", la cuál contiene todos los archivos necesarios para la ejecución de la plataforma.
 Para ello:
+
 1. Configuramos el servidor mediante su archivo .cfg
 2. Configuramos el monitor mediante su archivo .cfg
 3. Ejecutamos el archivo Servidor.bat
@@ -101,11 +103,12 @@ Para ello:
 
 ## Version
 
-Version 5.0
+Version 6.1
 
 ## Author
 
-* **Javier Martín Moreno** 
+* Este proyecto ha sido desarrollado por: **Javier Martín Moreno** 
+* Como tutor de éste TFG: **Gonzalo Antonio Aranda Corral**
 
 ## License
 
