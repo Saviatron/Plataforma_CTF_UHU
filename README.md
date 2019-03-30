@@ -29,8 +29,8 @@ Para la asignatura Sistemas Inteligentes, los alumnos podrán desarrollar por co
 
 **Esquema básico:**
 
-![](C:\Users\JAVIER\Desktop\TFG\GitRepository\Plataforma_CTF_UHU\Esquema_CTF.png)
-![](<https://github.com/Saviatron/Plataforma_CTF_UHU/blob/master/Esquema_CTF.png>)
+![](C:\Users\JAVIER\Desktop\TFG\GitRepository\Plataforma_CTF_UHU\Files\Esquema_CTF.png)
+![](<https://github.com/Saviatron/Plataforma_CTF_UHU/blob/master/Files/Esquema_CTF.png>)
 
 
 
@@ -100,10 +100,16 @@ Para ello:
 4. Ejecutamos el archivo Monitor.bat
 5. Si todo ha ido bien, veremos la partida. Solo queda lanzar los jugadores. Para ello, ejecutamos el .bat deseado de los jugadores.
 
-
 ## Version
 
 Version 6.1
+
+## Last Changes
+
+- Añadida funcionalidad de tablero parcial:
+![](C:\Users\JAVIER\Desktop\TFG\GitRepository\Plataforma_CTF_UHU\Files\Tablero_Parcial.gif)
+![](<https://github.com/Saviatron/Plataforma_CTF_UHU/blob/master/Files/Tablero_Parcial.gif>)
+
 
 ## Author
 
