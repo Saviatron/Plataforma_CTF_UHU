@@ -104,6 +104,10 @@ Para ello:
 
 Version 6.1
 
+Estado de desarrollo: **`98%`**
+
+- La plataforma es totalmente funcional, aunque siempre estará la opción de aumentar su desarrollo añadiendo nuevas funcionalidades.
+
 ## Last Changes
 
 - Añadida funcionalidad de tablero parcial:
@@ -114,7 +118,13 @@ Version 6.1
 ## Author
 
 * Este proyecto ha sido desarrollado por: **Javier Martín Moreno** 
-* Como tutor de éste TFG: **Gonzalo Antonio Aranda Corral**
+* Tutor de TFG: **Gonzalo Antonio Aranda Corral**
+
+## Contact
+
+- Si tiene alguna sugerencia, quiere reportar algún error, o necesita resolver alguna duda respecto a la plataforma:
+
+  [javimm97@gmail.com](mailto:javimm97@gmail.com)
 
 ## License
 
