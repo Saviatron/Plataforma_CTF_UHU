@@ -22,7 +22,7 @@ public interface Config {
 	/**
 	 * VERSION
 	 */
-	public static final String VERSION = "Captura la bandera 2019 - v5.1";
+	public static final String VERSION = "Captura la bandera 2019 - v6.1";
 	public static final String PSW = "CTF_2019";
 
 	/**
