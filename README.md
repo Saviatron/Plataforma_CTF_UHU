@@ -39,7 +39,7 @@ Para estar al tanto de la evolución del proyecto, puede vistar la página:
 http://opendatalab.uhu.es/index.php/Captura_la_bandera
 
 ## Instructions
-Archivo con las instrucciones de la plataforma: [Instrucciones.pdf](Instrucciones.pdf)
+Archivo con las instrucciones de la plataforma: [Instrucciones.pdf](Files/Instrucciones.pdf)
 
 ## Demo Video
 
