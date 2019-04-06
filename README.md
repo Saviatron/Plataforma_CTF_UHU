@@ -114,6 +114,15 @@ Estado de desarrollo: **`98%`**
 ![](C:\Users\JAVIER\Desktop\TFG\GitRepository\Plataforma_CTF_UHU\Files\Tablero_Parcial.gif)
 ![](<https://github.com/Saviatron/Plataforma_CTF_UHU/blob/master/Files/Tablero_Parcial.gif>)
 
+## Accessibility
+
+Uno de los pilares del software libre es que cualquier persona pueda disponer del software y utilizarlo como le parezca adecuado. Por tanto la accesibilidad es un principio que va muy implícito en las cuatro libertades del software libre que ha definido Richard M. Stallman.
+Posiblemente, lo primero que se nos venga a la mente cuando hablamos de accesibilidad es la ceguera. Pero la accesibilidad se preocupa también de personas con discapacidades motoras, auditivas, etc o individuos con discapacidades intelectuales y culturales.
+Gracias a los monitores individuales e independientes que complementan esta plataforma, cada usuario podrá seguir a su equipo de jugadores. Cualquier persona puede diseñar su equipo y lanzarlos a competir desde su pc.
+
+## Free Software Community
+
+Aunque en un principio el desarrollo fue pensado para la integración de las prácticas de varias asignaturas impartidas en el Grado de Ingeniería Informática de la Universidad de Huelva, se anima a todas las entidades educativas, y todo público interesado en el tema, de acuerdo con la política del Software Libre a usar esta plataforma. Con ella se podrán estudiar y poner en práctica la metodología de los Sistemas Multi-Agentes (MAS), que tanta importancia tienen en la actualidad.
 
 ## Author
 
