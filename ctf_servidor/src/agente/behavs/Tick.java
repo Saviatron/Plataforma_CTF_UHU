@@ -88,7 +88,7 @@ public class Tick extends TickerBehaviour {
 						posFin = posAnt;
 					}
 					// Si hay alguien de mi equipo:
-					else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null) {
+					else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null && CEREBRO.getJugador(j.getEquipo(), posFin)!=j) {
 						System.out.println(j.getLocalName() + " -> CHOCA CON AMIGO");
 						posFin = posAnt;
 					}

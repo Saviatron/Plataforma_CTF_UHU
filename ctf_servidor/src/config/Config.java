@@ -41,8 +41,8 @@ public interface Config {
 	public static final String Mapa = Propiedades.getPropiedad("MAPA");
 	public static final String Contenido = Propiedades.getPropiedad("CONTENIDO");
 
-	public static final String NOMBRE_SERVICIO = "SERVIDOR_2019";
-	public static final String TIPO_SERVICIO = "CTF";
+	public static final String NOMBRE_SERVICIO = Propiedades.getPropiedad("NOMBRE_SERVICIO");
+	public static final String TIPO_SERVICIO = Propiedades.getPropiedad("TIPO_SERVICIO");
 
 	/**
 	 * ACCIONES

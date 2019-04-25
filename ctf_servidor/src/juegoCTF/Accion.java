@@ -74,6 +74,8 @@ public class Accion {
 		this.orientacion = null;
 		this.grados = grados;
 		this.incorrecta = grados % 45 == 0 ? false : true;
+		if(desplazamiento!=0 && grados!=0)
+			this.incorrecta=true;
 		this.nula = desplazamiento == 0 ? true : false;
 		this.abandonar = false;
 	}

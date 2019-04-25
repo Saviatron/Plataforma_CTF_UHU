@@ -97,45 +97,46 @@ public class Jugador {
 
 	public void setAccion(Accion accion) {
 		this.accion = accion;
-		if (config.Config.ORIENTACION_RELATIVA) {
-			grados += accion.getGrados();
-			while(grados<0)
-				grados=360-grados;
-			while(grados>=360)
-				grados=grados%360;
-			switch (grados) {
-			case 0:
-				orientacion = Config.NORTE;
-				break;
-			case 45:
-				orientacion = Config.NE;
-				break;
-			case 90:
-				orientacion = Config.ESTE;
-				break;
-			case 135:
-				orientacion = Config.SE;
-				break;
-			case 180:
-				orientacion = Config.SUR;
-				break;
-			case 225:
-				orientacion = Config.SW;
-				break;
-			case 270:
-				orientacion = Config.OESTE;
-				break;
-			case 315:
-				orientacion = Config.NW;
-				break;
-			default:
-				System.err.println("NO SE RECONOCE ORIENTACION: "+grados);
-				break;
+		if (!accion.isIncorrecta() && !accion.isAbandonar() )
+			if (config.Config.ORIENTACION_RELATIVA) {
+				grados += accion.getGrados();
+				while (grados < 0)
+					grados = 360 - grados;
+				while (grados >= 360)
+					grados = grados % 360;
+				switch (grados) {
+				case 0:
+					orientacion = Config.NORTE;
+					break;
+				case 45:
+					orientacion = Config.NE;
+					break;
+				case 90:
+					orientacion = Config.ESTE;
+					break;
+				case 135:
+					orientacion = Config.SE;
+					break;
+				case 180:
+					orientacion = Config.SUR;
+					break;
+				case 225:
+					orientacion = Config.SW;
+					break;
+				case 270:
+					orientacion = Config.OESTE;
+					break;
+				case 315:
+					orientacion = Config.NW;
+					break;
+				default:
+					System.err.println("NO SE RECONOCE ORIENTACION: " + grados);
+					break;
+				}
+			} else {
+				orientacion = accion.getOrientacion();
+				grados = accion.getGrados();
 			}
-		} else {
-			orientacion = accion.getOrientacion();
-			grados = accion.getGrados();
-		}
 	}
 
 	public String getOrientacion() {
