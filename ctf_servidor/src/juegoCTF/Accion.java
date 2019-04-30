@@ -28,11 +28,31 @@ public class Accion {
 	private boolean nula;
 	private boolean abandonar;
 
-	public Accion(int desplazamiento, String orientacion) {
-		this.desplazamiento = desplazamiento > 1 ? 1 : desplazamiento;
-		this.orientacion = orientacion;
+	public Accion() {
+		this.desplazamiento = 0;
+		this.orientacion = null;
+		this.grados = 0;
 		this.incorrecta = false;
+		this.nula = false;
 		this.abandonar = false;
+	}
+
+	public int getDesplazamiento() {
+		return desplazamiento;
+	}
+
+	public void setDesplazamiento(int desplazamiento) {
+		this.desplazamiento = desplazamiento;
+	}
+
+	public String getOrientacion() {
+		return orientacion;
+	}
+
+	public void setOrientacion(String orientacion) {
+		//ABSOLUTA
+		this.desplazamiento = 1;
+		this.orientacion = orientacion;
 		switch (orientacion) {
 		case Config.NORTE:
 			grados = 0;
@@ -58,42 +78,10 @@ public class Accion {
 		case Config.NW:
 			grados = 315;
 			break;
-		case Config.ABANDONAR:
-			grados = 0;
-			this.abandonar = true;
-			break;
 		default:
 			grados = 0;
 			incorrecta = true;
 		}
-		this.nula = desplazamiento == 0 ? true : false;
-	}
-
-	public Accion(int desplazamiento, int grados) {
-		this.desplazamiento = desplazamiento > 1 ? 1 : desplazamiento;
-		this.orientacion = null;
-		this.grados = grados;
-		this.incorrecta = grados % 45 == 0 ? false : true;
-		if(desplazamiento!=0 && grados!=0)
-			this.incorrecta=true;
-		this.nula = desplazamiento == 0 ? true : false;
-		this.abandonar = false;
-	}
-
-	public int getDesplazamiento() {
-		return desplazamiento;
-	}
-
-	public void setDesplazamiento(int desplazamiento) {
-		this.desplazamiento = desplazamiento;
-	}
-
-	public String getOrientacion() {
-		return orientacion;
-	}
-
-	public void setOrientacion(String orientacion) {
-		this.orientacion = orientacion;
 	}
 
 	public int getGrados() {
@@ -101,7 +89,9 @@ public class Accion {
 	}
 
 	public void setGrados(int grados) {
+		//RELATIVA
 		this.grados = grados;
+		this.incorrecta = grados % 45 == 0 ? false : true;
 	}
 
 	public boolean isIncorrecta() {

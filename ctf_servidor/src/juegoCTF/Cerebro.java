@@ -230,35 +230,36 @@ public class Cerebro implements Config {
 	public Posicion calcularPos(Jugador j) {
 		int X = j.getPosicion().getX();
 		int Y = j.getPosicion().getY();
-		if (!j.getAccion().isNula() && !j.getAccion().isIncorrecta() && !j.getAccion().isAbandonar())
+		Accion acc=j.getAccion();
+		if (!acc.isNula() && !acc.isIncorrecta() && !acc.isAbandonar())
 			switch (j.getOrientacion()) {
 			case NORTE:
-				Y -= 1;
+				Y -= acc.getDesplazamiento();
 				break;
 			case NE:
-				X += 1;
-				Y -= 1;
+				X += acc.getDesplazamiento();
+				Y -= acc.getDesplazamiento();
 				break;
 			case ESTE:
-				X += 1;
+				X += acc.getDesplazamiento();
 				break;
 			case SE:
-				X += 1;
-				Y += 1;
+				X += acc.getDesplazamiento();
+				Y += acc.getDesplazamiento();
 				break;
 			case SUR:
-				Y += 1;
+				Y += acc.getDesplazamiento();
 				break;
 			case SW:
-				X -= 1;
-				Y += 1;
+				X -= acc.getDesplazamiento();
+				Y += acc.getDesplazamiento();
 				break;
 			case OESTE:
-				X -= 1;
+				X -= acc.getDesplazamiento();
 				break;
 			case NW:
-				X -= 1;
-				Y -= 1;
+				X -= acc.getDesplazamiento();
+				Y -= acc.getDesplazamiento();
 				break;
 			}
 		return new Posicion(X, Y);

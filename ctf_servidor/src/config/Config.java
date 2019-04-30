@@ -55,7 +55,11 @@ public interface Config {
 	public static final String NW = "NW";
 	public static final String SE = "SE";
 	public static final String SW = "SW";
+	public static final String ADELANTE = "ADELANTE";
+	public static final String ATRAS = "ATRAS";
+	public static final String ROTAR = "ROTAR";
 	public static final String ABANDONAR = "ABANDONAR";
+	public static final String NULA = "NULA";
 	public static final int GAME_OVER = 9;
 
 	/**

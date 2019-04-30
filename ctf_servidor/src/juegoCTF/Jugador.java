@@ -35,7 +35,7 @@ public class Jugador {
 	private String orientacion = Config.NORTE;
 	private int grados = 0;
 	private boolean tieneBandera[] = new boolean[Config.NUM_EQUIPOS];
-	private Accion accion = new Accion(0, Config.NORTE);
+	private Accion accion = new Accion();
 	private int equipo;
 	private int Life;
 	private int Strength;

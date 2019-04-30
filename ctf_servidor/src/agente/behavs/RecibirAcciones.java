@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-
 package agente.behavs;
 
 import java.util.StringTokenizer;
@@ -49,21 +48,26 @@ public class RecibirAcciones extends CyclicBehaviour {
 			Jugador j = CEREBRO.getJugador(accion.getSender());
 
 			if (j != null) {
-				StringTokenizer st = new StringTokenizer(accion.getContent(), ",");
-				Accion acc;
+				Accion acc = new Accion();
+
 				try {
-					String firstToken = st.nextToken();
-					if (firstToken.equals(Config.ABANDONAR))
-						acc = new Accion(-1, firstToken);
-					else {
-						if (Config.ORIENTACION_RELATIVA) {
-							acc = new Accion(Integer.parseInt(firstToken), Integer.parseInt(st.nextToken()));
-						} else {
-							acc = new Accion(Integer.parseInt(firstToken), st.nextToken());
-						}
+					if (accion.getContent().equals(Config.ABANDONAR))
+						acc.setAbandonar(true);
+					else if (accion.getContent().equals(Config.NULA))
+						acc.setNula(true);
+					else if (Config.ORIENTACION_RELATIVA && accion.getContent().equals(Config.ADELANTE)) {
+						acc.setDesplazamiento(1);
+					} else if (Config.ORIENTACION_RELATIVA && accion.getContent().equals(Config.ATRAS)) {
+						acc.setDesplazamiento(-1);
+					} else if (Config.ORIENTACION_RELATIVA && accion.getContent().startsWith(Config.ROTAR)) {
+						acc.setGrados(Integer.parseInt(accion.getContent().substring(6)));
+					} else if (!Config.ORIENTACION_RELATIVA) {
+						acc.setOrientacion(accion.getContent());
+					}else{
+						acc.setIncorrecta(true);
 					}
 				} catch (Exception ee) {
-					acc = new Accion(-1, "INCORRECTA");
+					acc.setIncorrecta(true);
 				}
 
 				if (acc.isIncorrecta()) {
