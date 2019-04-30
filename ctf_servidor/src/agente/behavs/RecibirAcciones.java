@@ -17,8 +17,6 @@
 
 package agente.behavs;
 
-import java.util.StringTokenizer;
-
 import agente.behavs.grafico.Enviar_Jugadores_Monitor;
 import config.Config;
 import jade.core.behaviours.CyclicBehaviour;
@@ -55,17 +53,17 @@ public class RecibirAcciones extends CyclicBehaviour {
 						acc.setAbandonar(true);
 					else if (accion.getContent().equals(Config.NULA))
 						acc.setNula(true);
-					else if (Config.ORIENTACION_RELATIVA && accion.getContent().equals(Config.ADELANTE)) {
+					else if (Config.ORIENTACION_RELATIVA && accion.getContent().equals(Config.ADELANTE))
 						acc.setDesplazamiento(1);
-					} else if (Config.ORIENTACION_RELATIVA && accion.getContent().equals(Config.ATRAS)) {
+					else if (Config.ORIENTACION_RELATIVA && accion.getContent().equals(Config.ATRAS))
 						acc.setDesplazamiento(-1);
-					} else if (Config.ORIENTACION_RELATIVA && accion.getContent().startsWith(Config.ROTAR)) {
+					else if (Config.ORIENTACION_RELATIVA && accion.getContent().startsWith(Config.ROTAR))
 						acc.setGrados(Integer.parseInt(accion.getContent().substring(6)));
-					} else if (!Config.ORIENTACION_RELATIVA) {
+					else if (!Config.ORIENTACION_RELATIVA)
 						acc.setOrientacion(accion.getContent());
-					}else{
+					else
 						acc.setIncorrecta(true);
-					}
+
 				} catch (Exception ee) {
 					acc.setIncorrecta(true);
 				}
