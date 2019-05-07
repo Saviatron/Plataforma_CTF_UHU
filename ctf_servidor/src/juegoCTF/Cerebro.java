@@ -504,7 +504,7 @@ public class Cerebro implements Config {
 
 	public String EnviarTableroaJugador(Jugador jug) {
 
-		// "[ANCHO_MAPA],[ALTO_MAPA],[POS_X],[POS_Y],[NUM_EQ],[MAPA]\n[linea1]\n..."
+		// "[ANCHO_MAPA],[ALTO_MAPA],[POS_X],[POS_Y],[GRADOS],[NUM_EQ],[MAPA]\n[linea1]\n..."
 
 		StringBuffer sb = new StringBuffer();
 
@@ -516,6 +516,7 @@ public class Cerebro implements Config {
 
 		sb.append(jug.getPosicion().getX() + ",");
 		sb.append(jug.getPosicion().getY() + ",");
+		sb.append(jug.getGrados() + ",");
 
 		sb.append(NUM_EQUIPOS + ",");
 		if (!VISION_PARCIAL) {
@@ -595,11 +596,15 @@ public class Cerebro implements Config {
 
 	public String ActualizarTableroaJugador(Jugador jug) {
 
-		// "[POS_X],[POS_Y]\n[linea1]\n..."
+		// "[POS_X],[POS_Y],[ORIENTACION]\n[linea1]\n..."
 		StringBuffer sb = new StringBuffer();
+		
 		sb.append(jug.getPosicion().getX());
 		sb.append(",");
 		sb.append(jug.getPosicion().getY());
+		sb.append(",");
+		sb.append(jug.getGrados());
+		
 		if (!VISION_PARCIAL) {
 			sb.append("\n");
 			for (int i = 0; i < entradas.length; i++) {

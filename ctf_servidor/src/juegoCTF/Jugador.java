@@ -147,6 +147,10 @@ public class Jugador {
 		this.orientacion = orientacion;
 	}
 
+	public int getGrados() {
+		return grados;
+	}
+
 	public int getEquipo() {
 		return equipo;
 	}
