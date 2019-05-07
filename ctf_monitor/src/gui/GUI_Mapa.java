@@ -22,7 +22,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Iterator;
 import java.util.StringTokenizer;
-import javax.swing.JOptionPane;
 import config.Config_GUI;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -265,7 +264,6 @@ public class GUI_Mapa extends PApplet {
 				Sonido.musicaPartida.close();
 				Sonido.musicaFin.play();
 			}
-			JOptionPane.showMessageDialog(null, mapa, "Fin de la Partida", JOptionPane.INFORMATION_MESSAGE);
 		} else
 			this.mapa.update(mapa);
 		// this.mapa.imprimeMapa();

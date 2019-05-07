@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-
 package gui;
 
 import java.awt.Color;
@@ -33,6 +32,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -50,7 +50,11 @@ public class GUI_Interactuar extends JFrame {
 	public JScrollPane[] sPane;
 	private int anchoTexto = 100;
 	private boolean play = true;
+	private boolean atras = false;
+	private boolean alante = false;
 	private boolean lector = false;
+	private String InfoLector = "Información:\n***********************\n\n";
+	public JTextArea t_info;
 	private int NumEq;
 	private int tamx, tamy;
 	private String CABECERA = "Equipo ";
@@ -164,6 +168,39 @@ public class GUI_Interactuar extends JFrame {
 		this.add(button3D);
 		this.add(button2D);
 		if (lector) {
+			t_info = new JTextArea();
+			t_info.setPreferredSize(new Dimension(200, 150));
+			t_info.setEditable(false);
+			t_info.setText(InfoLector);
+			t_info.setLineWrap(true);
+
+			JScrollPane s_info = new JScrollPane(t_info, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+					JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			s_info.setBounds((Config_GUI.ANCHO_CASILLA + 1) * tamx + 1, 1, anchoTexto,
+					(Config_GUI.ALTO_CASILLA + 1) * tamy);
+
+			this.add(s_info);
+
+			JButton Atras = new JButton("Atras");
+			Atras.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					atras = true;
+				}
+
+			});
+			this.add(Atras);
+			JButton Alante = new JButton("Alante");
+			Alante.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					alante = true;
+				}
+
+			});
+			this.add(Alante);
 			JButton PlayButton = new JButton("Pause");
 			PlayButton.addActionListener(new ActionListener() {
 
@@ -198,6 +235,11 @@ public class GUI_Interactuar extends JFrame {
 		JOptionPane.showMessageDialog(this, contenido, titulo, JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	public void actInfoLector(String info) {
+
+		t_info.setText(InfoLector + info);
+	}
+
 	public void rePintarJugadores(int eq, String jugadores) {
 		StringTokenizer st = new StringTokenizer(jugadores, "\n");
 		dlm[eq].clear();
@@ -211,6 +253,22 @@ public class GUI_Interactuar extends JFrame {
 
 	public boolean getPlay() {
 		return play;
+	}
+
+	public boolean getAtras() {
+		return atras;
+	}
+
+	public boolean getAlante() {
+		return alante;
+	}
+
+	public void falseAtras() {
+		atras = false;
+	}
+
+	public void falseAlante() {
+		alante = false;
 	}
 
 }

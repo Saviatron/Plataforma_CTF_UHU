@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-
 package agente.behavs;
 
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentContainer;
+import jade.wrapper.StaleProxyException;
 import juegoCTF.Accion;
 import juegoCTF.Cerebro;
 import juegoCTF.Jugador;
@@ -42,7 +43,7 @@ import juegoCTF.Posicion;
 public class Tick extends TickerBehaviour {
 
 	Cerebro CEREBRO;
-//	private Random random = new Random(System.currentTimeMillis());
+	// private Random random = new Random(System.currentTimeMillis());
 
 	public Tick(Agent a, long period, Cerebro _cer) {
 		super(a, period);
@@ -88,7 +89,8 @@ public class Tick extends TickerBehaviour {
 						posFin = posAnt;
 					}
 					// Si hay alguien de mi equipo:
-					else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null && CEREBRO.getJugador(j.getEquipo(), posFin)!=j) {
+					else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null
+							&& CEREBRO.getJugador(j.getEquipo(), posFin) != j) {
 						System.out.println(j.getLocalName() + " -> CHOCA CON AMIGO");
 						posFin = posAnt;
 					}
@@ -153,7 +155,8 @@ public class Tick extends TickerBehaviour {
 		}
 
 		//// ESCRIBIR TICK EN FICHERO
-		CEREBRO.partidaTXT.escribirPartida(actualizacion);
+		if(CEREBRO.hayJugadores())
+			CEREBRO.partidaTXT.escribirPartida(actualizacion);
 
 	}
 
@@ -266,21 +269,21 @@ public class Tick extends TickerBehaviour {
 		/*Jugador c = CEREBRO.getJugador(equipo_contrario, posFin);
 		j.setLife(j.getLife() - random.nextInt(c.getStrength()));
 		c.setLife(c.getLife() - random.nextInt(j.getStrength()));
-
+		
 		// TODO para eliminar por nombre por conflictos en hashtable
 		// CEREBRO.removeJugador(equipo_propio, j.getName());
 		// CEREBRO.removeJugador(equipo_contrario, c.getName());
-
+		
 		// TODO
 		if (j.getLife() <= 0) {
 			CEREBRO.removeJugador(j.getEquipo(), j);
 			CEREBRO.removeAccion(j);
-
+		
 			ACLMessage msg_j = j.enviar(String.valueOf(Config.GAME_OVER));
 			myAgent.send(msg_j);
 			myAgent.addBehaviour(new Enviar_Jugadores_Monitor(j.getEquipo(), CEREBRO.getEquipo(j.getEquipo()),
 					CEREBRO.getMonitores()));
-
+		
 			j.setNoTieneBandera();
 			if (c.getLife() > 0)
 				if (c.getPosicion().equals(CEREBRO.getBandera(c.getEquipo()))) {
@@ -294,12 +297,12 @@ public class Tick extends TickerBehaviour {
 		if (c.getLife() <= 0) {
 			CEREBRO.removeJugador(equipo_contrario, c);
 			CEREBRO.removeAccion(c);
-
+		
 			ACLMessage msg_jc = c.enviar(String.valueOf(Config.GAME_OVER));
 			myAgent.send(msg_jc);
 			myAgent.addBehaviour(new Enviar_Jugadores_Monitor(c.getEquipo(), CEREBRO.getEquipo(c.getEquipo()),
 					CEREBRO.getMonitores()));
-
+		
 			c.setNoTieneBandera();
 			if (j.getLife() > 0)
 				if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
@@ -310,7 +313,7 @@ public class Tick extends TickerBehaviour {
 					j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
 				}
 		}
-
+		
 		CEREBRO.estadisticas.add_muerte(j.getLocalName(), j.getEquipo(), c.getLocalName(), c.getEquipo());
 		CEREBRO.addMuerte(posFin);*/
 	}
@@ -339,15 +342,22 @@ public class Tick extends TickerBehaviour {
 				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
 					enviarGameOver(i);
 				enviarGameOveraMonitores(j.getEquipo(), j.getLocalName());
-				CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
+//				CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
 				CEREBRO.partidaTXT.escribirPartidaFin("Ganador Equipo " + Config.Equipos[j.getEquipo()]
 						+ "\n Gracias al jugador: " + j.getLocalName());
-//				CEREBRO.partidaTXT.cerrar();
+				// CEREBRO.partidaTXT.cerrar();
 				CEREBRO.estadisticas.ganador(j.getLocalName(), j.getEquipo());
 				CEREBRO.estadisticas.escribirEstadisticas();
 				// TODO: GENERAR ESTADISTICA DE PUNTUACION
 
 				myAgent.doDelete();
+				AgentContainer cont = myAgent.getContainerController();
+				try {
+					cont.kill();
+				} catch (StaleProxyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else
 				posFin = posAnt;
 

@@ -37,7 +37,7 @@ import juegoCTF.Posicion;
  */
 public class Cerebro implements Config {
 
-	public EscribirFichero partidaTXT = new EscribirFichero("Partida");
+	public EscribirFichero partidaTXT = new EscribirFichero("../Partidas/Partida");
 	public Estadisticas estadisticas = new Estadisticas();
 
 	private Tablero_Lineal tablero;
@@ -200,6 +200,14 @@ public class Cerebro implements Config {
 
 	public List<Jugador> getEquipo(int equipo) {
 		return jugadores[equipo];
+	}
+
+	public Boolean hayJugadores() {
+		for (int i = 0; i < jugadores.length; i++) {
+			if(!jugadores[i].isEmpty())
+				return true;
+		}
+		return false;
 	}
 
 	public boolean asignarPosicionEntrada(Jugador j) {

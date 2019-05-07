@@ -25,32 +25,38 @@ import java.io.IOException;
 public class EscribirFichero {
 	BufferedWriter bw;
 	String newFileName;
+	Boolean fin = false;
 
 	public EscribirFichero(String filename) {
-		File aFile = new File(filename+".txt");
-	    int fileNo = 0;
-	    newFileName = "";
-	    if (aFile.exists() && !aFile.isDirectory()) {
+		File directionTemp = new File("../Partidas");
+		// Make Folder
+		if (!directionTemp.exists()) {
+			directionTemp.mkdirs();
+		}
+		
+		File aFile = new File(filename + ".txt");
+		int fileNo = 0;
+		newFileName = "";
+		if (aFile.exists() && !aFile.isDirectory()) {
 
+			// newFileName = filename.replaceAll(getFileExtension(filename), "("
+			// + fileNo + ")" + getFileExtension(filename));
 
-	        //newFileName = filename.replaceAll(getFileExtension(filename), "(" + fileNo + ")" + getFileExtension(filename));
+			while (aFile.exists()) {
+				fileNo++;
+				aFile = new File(filename + " (" + fileNo + ").txt");
+				newFileName = filename + " (" + fileNo + ").txt";
+			}
 
-	        while(aFile.exists()){
-	            fileNo++;
-	            aFile = new File(filename+" (" + fileNo + ").txt");
-	            newFileName = filename+" (" + fileNo + ").txt";
-	        }
-
-
-	    } else if (!aFile.exists()) {
-	        try {
+		} else if (!aFile.exists()) {
+			try {
 				aFile.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        newFileName = filename+".txt";
-	    }
+			newFileName = filename + ".txt";
+		}
 
 		try {
 			this.bw = new BufferedWriter(new FileWriter(new File(newFileName)));
@@ -58,23 +64,26 @@ public class EscribirFichero {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	    
+
 	}
 
 	public void escribirPartida(String cadena) {
-		try {
-			this.bw = new BufferedWriter(new FileWriter(new File(newFileName),true));
-			bw.write(cadena + ";\n\n");
-			bw.close();
-		} catch (IOException e) {
-			// e.printStackTrace();
-			// System.err.println("No se ha escrito.");
+		if (!fin) {
+			try {
+				this.bw = new BufferedWriter(new FileWriter(new File(newFileName), true));
+				bw.write(cadena + ";\n\n");
+				bw.close();
+			} catch (IOException e) {
+				// e.printStackTrace();
+				// System.err.println("No se ha escrito.");
+			}
 		}
 	}
 
 	public void escribirPartidaFin(String cadena) {
+		fin = true;
 		try {
-			this.bw = new BufferedWriter(new FileWriter(new File(newFileName),true));
+			this.bw = new BufferedWriter(new FileWriter(new File(newFileName), true));
 			bw.write(cadena + ".\n");
 			bw.close();
 		} catch (IOException e) {
@@ -82,10 +91,10 @@ public class EscribirFichero {
 			// System.err.println("No se ha escrito.");
 		}
 	}
-	
+
 	public void escribirEstadistica(String cadena) {
 		try {
-			this.bw = new BufferedWriter(new FileWriter(new File(newFileName),true));
+			this.bw = new BufferedWriter(new FileWriter(new File(newFileName), true));
 			bw.write(cadena);
 			bw.close();
 		} catch (IOException e) {
@@ -94,13 +103,13 @@ public class EscribirFichero {
 		}
 	}
 
-//	public void cerrar() {
-//		try {
-//			bw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	// public void cerrar() {
+	// try {
+	// bw.close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
 
 }

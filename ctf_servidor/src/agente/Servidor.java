@@ -31,4 +31,8 @@ public class Servidor extends Agent {
 		addBehaviour(new Inicializar(this));
 	}
 
+	protected void takeDown() {
+		// Printout a dismissal message
+		System.out.println("Servidor " + getAID().getName() + " terminating.");
+	}
 }
