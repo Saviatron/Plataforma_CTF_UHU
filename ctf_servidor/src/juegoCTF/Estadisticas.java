@@ -51,7 +51,7 @@ public class Estadisticas {
 	ArrayList<struct_muerte> muertes = new ArrayList<struct_muerte>();
 	struct_jugador ganador = null;
 	int eqganador = -1;
-	EscribirFichero estadisticasTXT = new EscribirFichero("../Partidas/Estadisticas");
+	EscribirFichero estadisticasTXT = new EscribirFichero("./Partidas/Estadisticas");
 
 	public Estadisticas() {
 		for (int i = 0; i < jugadores.length; i++) {
