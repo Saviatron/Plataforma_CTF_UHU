@@ -77,6 +77,9 @@ public interface Config {
 
 	// TIEMPO DE TICK (en ms)
 	public static final int TiempoTick = Integer.parseInt(Propiedades.getPropiedad("TiempoTick"));
+	
+	// TICKS MAXIMOS
+	public static final int TicksMaximos = Integer.parseInt(Propiedades.getPropiedad("TicksMaximos"));
 
 	public static double TASA_RECHAZO = Double.parseDouble(Propiedades.getPropiedad("TASA_RECHAZO"));
 

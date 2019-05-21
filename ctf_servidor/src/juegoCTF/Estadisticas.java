@@ -101,8 +101,13 @@ public class Estadisticas {
 	}
 
 	public void ganador(String jugador, int equipo) {
-		ganador = new struct_jugador(jugador);
-		eqganador = equipo;
+		if (jugador == null || equipo < 0) {
+			ganador = null;
+			eqganador = -1;
+		} else {
+			ganador = new struct_jugador(jugador);
+			eqganador = equipo;
+		}
 	}
 
 	public void escribirEstadisticas() {
@@ -113,7 +118,7 @@ public class Estadisticas {
 		estadisticasTXT.escribirEstadistica("\n******************************************************************\n");
 
 		for (int equipo = 0; equipo < Config.NUM_EQUIPOS; equipo++) {
-			int bajasequipo=0;
+			int bajasequipo = 0;
 			estadisticasTXT.escribirEstadistica("\n- Resumen equipo " + Config.Equipos[equipo] + ":\n\n");
 			Iterator<struct_jugador> j = jugadores[equipo].iterator();
 			while (j.hasNext()) {
@@ -121,9 +126,9 @@ public class Estadisticas {
 				estadisticasTXT.escribirEstadistica("\tEl jugador " + jugador.nombre + ":\n");
 				estadisticasTXT.escribirEstadistica("\t\tHa jugado " + jugador.ticks + " ticks.\n");
 				estadisticasTXT.escribirEstadistica("\t\tHa muerto " + jugador.muertes + " veces.\n\n");
-				bajasequipo+=jugador.muertes;
+				bajasequipo += jugador.muertes;
 			}
-			estadisticasTXT.escribirEstadistica("\t- MUERTES DEL EQUIPO: "+bajasequipo+".\n\n");
+			estadisticasTXT.escribirEstadistica("\t- MUERTES DEL EQUIPO: " + bajasequipo + ".\n\n");
 		}
 
 		estadisticasTXT.escribirEstadistica("\n******************************************************************\n");
@@ -138,9 +143,12 @@ public class Estadisticas {
 
 		estadisticasTXT.escribirEstadistica("\n******************************************************************\n");
 
-		estadisticasTXT.escribirEstadistica("\nHA GANADO EL EQUIPO: " + Config.Equipos[eqganador] + ".\n");
-		estadisticasTXT.escribirEstadistica("\t Gracias al jugador: " + ganador.nombre + ".\n");
-		estadisticasTXT.escribirEstadistica("\n\n//////// ENHORABUENA /////////");
-//		estadisticasTXT.cerrar();
+		if (ganador == null || eqganador == -1) {
+			estadisticasTXT.escribirEstadistica("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+		} else {
+			estadisticasTXT.escribirEstadistica("\nHA GANADO EL EQUIPO: " + Config.Equipos[eqganador] + ".\n");
+			estadisticasTXT.escribirEstadistica("\t Gracias al jugador: " + ganador.nombre + ".\n");
+			estadisticasTXT.escribirEstadistica("\n\n//////// ENHORABUENA /////////");
+		} // estadisticasTXT.cerrar();
 	}
 }

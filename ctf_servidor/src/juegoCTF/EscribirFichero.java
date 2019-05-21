@@ -28,7 +28,7 @@ public class EscribirFichero {
 	Boolean fin = false;
 
 	public EscribirFichero(String filename) {
-		File directionTemp = new File("../Partidas");
+		File directionTemp = new File("./Partidas");
 		// Make Folder
 		if (!directionTemp.exists()) {
 			directionTemp.mkdirs();

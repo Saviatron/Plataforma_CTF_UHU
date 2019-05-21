@@ -43,6 +43,9 @@ import juegoCTF.Posicion;
 public class Tick extends TickerBehaviour {
 
 	Cerebro CEREBRO;
+//	double Time = System.currentTimeMillis();
+	int ticksCount = 0;
+
 	// private Random random = new Random(System.currentTimeMillis());
 
 	public Tick(Agent a, long period, Cerebro _cer) {
@@ -56,108 +59,137 @@ public class Tick extends TickerBehaviour {
 	 * CADA TICK DEL JUEGO
 	 */
 	protected void onTick() {
+		if (ticksCount < Config.TicksMaximos) {
+//			System.out.println("Tick: " + (System.currentTimeMillis() - Time));
+//			Time = System.currentTimeMillis();
 
-		// System.out.println("\n\nNuevo TICK:");
+			// System.out.println("\n\nNuevo TICK:");
 
-		// 1. Comprobar, SI SE HABILITA DESCONEXION, si hay alguno para
-		// desconectar.
-		if (Config.DESCONEXION)
-			for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-				comprobarDesconexion(i);
+			// 1. Comprobar, SI SE HABILITA DESCONEXION, si hay alguno para
+			// desconectar.
+			if (Config.DESCONEXION)
+				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+					comprobarDesconexion(i);
 
-		// 2. Recoger la lista de Jugadores que tienen acciones pendientes
-		Hashtable<Jugador, Accion> lj = CEREBRO.getListaAcciones();
+			// 2. Recoger la lista de Jugadores que tienen acciones pendientes
+			Hashtable<Jugador, Accion> lj = CEREBRO.getListaAcciones();
 
-		if (!lj.isEmpty()) {
+			if (!lj.isEmpty()) {
 
-			Enumeration<Jugador> en = lj.keys();
+				Enumeration<Jugador> en = lj.keys();
 
-			while (en.hasMoreElements()) {
+				while (en.hasMoreElements()) {
 
-				Jugador j = en.nextElement();
+					Jugador j = en.nextElement();
 
-				if (j == null)
-					continue;
+					if (j == null)
+						continue;
 
-				if (j.getPenalizacion() == 0) {
-					Posicion posAnt = j.getPosicion();
-					Posicion posFin = CEREBRO.calcularPos(j);
+					if (j.getPenalizacion() == 0) {
+						Posicion posAnt = j.getPosicion();
+						Posicion posFin = CEREBRO.calcularPos(j);
 
-					// Si hay pared:
-					if (CEREBRO.esPared(posFin)) {
-						System.out.println(j.getLocalName() + " -> CHOCA CON PARED");
-						posFin = posAnt;
-					}
-					// Si hay alguien de mi equipo:
-					else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null
-							&& CEREBRO.getJugador(j.getEquipo(), posFin) != j) {
-						System.out.println(j.getLocalName() + " -> CHOCA CON AMIGO");
-						posFin = posAnt;
-					}
-					// Si hay algun enemigo:
-					else if (CEREBRO.getEnemigo(j.getEquipo(), posFin) != null) {
-						System.out.println(j.getLocalName() + " -> ENTRA EN PELEA CON "
-								+ CEREBRO.getEnemigo(j.getEquipo(), posFin).getLocalName());
-						pelea(j, CEREBRO.getEnemigo(j.getEquipo(), posFin).getEquipo(), posFin);
-					}
-					// Si llegamos a nuestra base:
-					else if (posFin.equals(CEREBRO.getBase(j.getEquipo()))) {
-						System.out.println(j.getLocalName() + " -> LLEGA A BASE PROPIA");
-						llegarABasePropia(j, posFin, posAnt);
-					}
-					// Si llegamos a base contraria:
-					// TODO:
-					else if (CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin) != -1) {
-						System.out.println(j.getLocalName() + " -> LLEGA A BASE CONTRARIA");
-						j.setTieneBandera(CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin), true);
-					}
-					// Si cogemos nuestra bandera:
-					else if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
-						System.out.println(j.getLocalName() + " -> COGE BANDERA PROPIA");
-						CEREBRO.setBandera(j.getEquipo(), CEREBRO.getBase(j.getEquipo()));
-					}
-					// Si cogemos bandera contraria:
-					else if (CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin) != -1) {
-						System.out.println(j.getLocalName() + " -> COGE BANDERA CONTRARIA");
-						j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
+						// Si hay pared:
+						if (CEREBRO.esPared(posFin)) {
+							System.out.println(j.getLocalName() + " -> CHOCA CON PARED");
+							posFin = posAnt;
+						}
+						// Si hay alguien de mi equipo:
+						else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null
+								&& CEREBRO.getJugador(j.getEquipo(), posFin) != j) {
+							System.out.println(j.getLocalName() + " -> CHOCA CON AMIGO");
+							posFin = posAnt;
+						}
+						// Si hay algun enemigo:
+						else if (CEREBRO.getEnemigo(j.getEquipo(), posFin) != null) {
+							System.out.println(j.getLocalName() + " -> ENTRA EN PELEA CON "
+									+ CEREBRO.getEnemigo(j.getEquipo(), posFin).getLocalName());
+							pelea(j, CEREBRO.getEnemigo(j.getEquipo(), posFin).getEquipo(), posFin);
+						}
+						// Si llegamos a nuestra base:
+						else if (posFin.equals(CEREBRO.getBase(j.getEquipo()))) {
+							System.out.println(j.getLocalName() + " -> LLEGA A BASE PROPIA");
+							llegarABasePropia(j, posFin, posAnt);
+						}
+						// Si llegamos a base contraria:
+						// TODO:
+						else if (CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin) != -1) {
+							System.out.println(j.getLocalName() + " -> LLEGA A BASE CONTRARIA");
+							j.setTieneBandera(CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin), true);
+						}
+						// Si cogemos nuestra bandera:
+						else if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
+							System.out.println(j.getLocalName() + " -> COGE BANDERA PROPIA");
+							CEREBRO.setBandera(j.getEquipo(), CEREBRO.getBase(j.getEquipo()));
+						}
+						// Si cogemos bandera contraria:
+						else if (CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin) != -1) {
+							System.out.println(j.getLocalName() + " -> COGE BANDERA CONTRARIA");
+							j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
+						} else {
+							// TODO: ESTO ES UN ELSE????
+							for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+								if (j.isTieneBandera(i))
+									CEREBRO.setBandera(i, posFin);
+						}
+
+						j.setPosicion(posFin);
+						CEREBRO.estadisticas.add_tick(j.getLocalName(), j.getEquipo());
+						// System.out.println("Nueva pos : " + j.getName() + "
+						// acc:
+						// " + j.getPosicion());
+
+						// PENALIZACION > 0
 					} else {
-						// TODO: ESTO ES UN ELSE????
-						for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-							if (j.isTieneBandera(i))
-								CEREBRO.setBandera(i, posFin);
+						//// BAJANDO PENALIZACION
+						j.setPenalizacion(j.getPenalizacion() - 1);
 					}
-
-					j.setPosicion(posFin);
-					CEREBRO.estadisticas.add_tick(j.getLocalName(), j.getEquipo());
-					// System.out.println("Nueva pos : " + j.getName() + " acc:
-					// " + j.getPosicion());
-
-					// PENALIZACION > 0
-				} else {
-					//// BAJANDO PENALIZACION
-					j.setPenalizacion(j.getPenalizacion() - 1);
 				}
+				lj.remove(en);
 			}
-			lj.remove(en);
-		}
 
-		//// UNA VEZ TERMINADO... SE INFORMA A _TODO_ EL MUNDO DEL NUEVO CICLO
-		if (Config.DESCONEXION)
+			//// UNA VEZ TERMINADO... SE INFORMA A _TODO_ EL MUNDO DEL NUEVO
+			//// CICLO
+			if (Config.DESCONEXION)
+				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+					Actualizacion(CEREBRO.getEquipo(i));
+
+			//// INFORMAR A LOS MONITORES
+			// Al escribir, borramos muertes para pintarlas 1 vez. Al
+			//// partida.txt
+			//// llegaban borradas
+			String actualizacion = CEREBRO.ActualizarTableroaMonitor();
+			if (!CEREBRO.getMonitores().isEmpty()) {
+				myAgent.addBehaviour(new Enviar_Grafico_Monitor(actualizacion, CEREBRO.getMonitores()));
+			}
+
+			//// ESCRIBIR TICK EN FICHERO
+			if (CEREBRO.hayJugadores())
+				CEREBRO.partidaTXT.escribirPartida(actualizacion);
+			
+			ticksCount++;
+		}else{
+			System.out.println("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+
 			for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-				Actualizacion(CEREBRO.getEquipo(i));
+				enviarGameOver(i);
+			enviarGameOveraMonitores("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+			// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
+			CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+			// CEREBRO.partidaTXT.cerrar();
+			CEREBRO.estadisticas.ganador(null,-1);
+			CEREBRO.estadisticas.escribirEstadisticas();
+			// TODO: GENERAR ESTADISTICA DE PUNTUACION
 
-		//// INFORMAR A LOS MONITORES
-		// Al escribir, borramos muertes para pintarlas 1 vez. Al partida.txt
-		//// llegaban borradas
-		String actualizacion = CEREBRO.ActualizarTableroaMonitor();
-		if (!CEREBRO.getMonitores().isEmpty()) {
-			myAgent.addBehaviour(new Enviar_Grafico_Monitor(actualizacion, CEREBRO.getMonitores()));
+			myAgent.doDelete();
+			AgentContainer cont = myAgent.getContainerController();
+			try {
+				cont.kill();
+			} catch (StaleProxyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
-		//// ESCRIBIR TICK EN FICHERO
-		if(CEREBRO.hayJugadores())
-			CEREBRO.partidaTXT.escribirPartida(actualizacion);
-
 	}
 
 	/**
@@ -196,7 +228,7 @@ public class Tick extends TickerBehaviour {
 	/**
 	 * ENVIA EL FINAL DE LA PARTIDA A LOS MONITORES
 	 */
-	private void enviarGameOveraMonitores(int equi, String jugador) {
+	private void enviarGameOveraMonitores(String gameover) {
 		// El servidor muere antes de realizar el comportamiento
 		// myAgent.addBehaviour(new Enviar_Informacion_Monitor("Juego terminado:
 		// Ganador Equipo " + equi, CEREBRO.getMonitores()));
@@ -205,7 +237,7 @@ public class Tick extends TickerBehaviour {
 		while (i.hasNext()) {
 			msg.addReceiver(i.next());
 		}
-		msg.setContent("Juego terminado: Ganador Equipo " + Config.Equipos[equi] + "\n Gracias al jugador: " + jugador);
+		msg.setContent(gameover);
 		msg.setConversationId("Info");
 		myAgent.send(msg);
 	}
@@ -341,8 +373,8 @@ public class Tick extends TickerBehaviour {
 
 				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
 					enviarGameOver(i);
-				enviarGameOveraMonitores(j.getEquipo(), j.getLocalName());
-//				CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
+				enviarGameOveraMonitores("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()] + "\n Gracias al jugador: " + j.getLocalName());
+				// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
 				CEREBRO.partidaTXT.escribirPartidaFin("Ganador Equipo " + Config.Equipos[j.getEquipo()]
 						+ "\n Gracias al jugador: " + j.getLocalName());
 				// CEREBRO.partidaTXT.cerrar();
