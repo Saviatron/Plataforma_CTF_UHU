@@ -204,7 +204,7 @@ public class Cerebro implements Config {
 
 	public Boolean hayJugadores() {
 		for (int i = 0; i < jugadores.length; i++) {
-			if(!jugadores[i].isEmpty())
+			if (!jugadores[i].isEmpty())
 				return true;
 		}
 		return false;
@@ -238,7 +238,7 @@ public class Cerebro implements Config {
 	public Posicion calcularPos(Jugador j) {
 		int X = j.getPosicion().getX();
 		int Y = j.getPosicion().getY();
-		Accion acc=j.getAccion();
+		Accion acc = j.getAccion();
 		if (!acc.isNula() && !acc.isIncorrecta() && !acc.isAbandonar())
 			switch (j.getOrientacion()) {
 			case NORTE:
@@ -579,8 +579,8 @@ public class Cerebro implements Config {
 						sb.append(jugadores[i].get(j).getPosicion().getX());
 						sb.append(",");
 						sb.append(jugadores[i].get(j).getPosicion().getY());
-						// sb.append(",");
-						// sb.append(jugadores[i].get(j).getAccion());
+						sb.append(",");
+						sb.append(jugadores[i].get(j).getGrados());
 						sb.append("\n");
 					}
 				}
@@ -606,13 +606,13 @@ public class Cerebro implements Config {
 
 		// "[POS_X],[POS_Y],[ORIENTACION]\n[linea1]\n..."
 		StringBuffer sb = new StringBuffer();
-		
+
 		sb.append(jug.getPosicion().getX());
 		sb.append(",");
 		sb.append(jug.getPosicion().getY());
 		sb.append(",");
 		sb.append(jug.getGrados());
-		
+
 		if (!VISION_PARCIAL) {
 			sb.append("\n");
 			for (int i = 0; i < entradas.length; i++) {
@@ -661,8 +661,8 @@ public class Cerebro implements Config {
 						sb.append(jugadores[i].get(j).getPosicion().getX());
 						sb.append(",");
 						sb.append(jugadores[i].get(j).getPosicion().getY());
-						// sb.append(",");
-						// sb.append(jugadores[i].get(j).getAccion());
+						sb.append(",");
+						sb.append(jugadores[i].get(j).getGrados());
 						sb.append("\n");
 					}
 				}
@@ -684,8 +684,13 @@ public class Cerebro implements Config {
 	}
 
 	private String mapaParcial(Jugador jug) {
-		int ancho = (ANCHO / 2);
 		int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+		x1 = jug.getPosicion().getX() - ANCHO;
+		x2 = jug.getPosicion().getX() + ANCHO;
+		y1 = jug.getPosicion().getY() - ALCANCE;
+		y2 = jug.getPosicion().getY() + ALCANCE;
+		/*int ancho = (ANCHO / 2);
+		int alcance = (ALCANCE / 2);
 		switch (jug.getOrientacion()) {
 		case NORTE:
 			x1 = jug.getPosicion().getX() - ancho;
@@ -735,7 +740,7 @@ public class Cerebro implements Config {
 			y1 = jug.getPosicion().getY() - ANCHO;
 			y2 = jug.getPosicion().getY();
 			break;
-		}
+		}*/
 		x1 = (x1 < 0) ? 0 : ((x1 > tablero.getDX() - 1) ? tablero.getDX() - 1 : x1);
 		x2 = (x2 < 0) ? 0 : ((x2 > tablero.getDX() - 1) ? tablero.getDX() - 1 : x2);
 		y1 = (y1 < 0) ? 0 : ((y1 > tablero.getDY() - 1) ? tablero.getDY() - 1 : y1);
@@ -770,7 +775,8 @@ public class Cerebro implements Config {
 							&& jugadores[i].get(j).getPosicion().getY() >= y1
 							&& jugadores[i].get(j).getPosicion().getY() <= y2)
 						s += "Jugador" + "," + i + "," + jugadores[i].get(j).getPosicion().getX() + ","
-								+ jugadores[i].get(j).getPosicion().getY() + "\n";
+								+ jugadores[i].get(j).getPosicion().getY() + "," + jugadores[i].get(j).getGrados()
+								+ "\n";
 
 		for (int i = 0; i < muertes.size(); i++)
 			if (muertes.get(i).getX() >= x1 && muertes.get(i).getX() <= x2 && muertes.get(i).getY() >= y1
