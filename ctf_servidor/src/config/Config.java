@@ -60,7 +60,8 @@ public interface Config {
 	public static final String ROTAR = "ROTAR";
 	public static final String ABANDONAR = "ABANDONAR";
 	public static final String NULA = "NULA";
-	public static final int GAME_OVER = 9;
+	public static final String PIERDE = "PIERDE";
+	public static final String GANA = "GANA";
 
 	/**
 	 * CONFIGURACION EXTERNA

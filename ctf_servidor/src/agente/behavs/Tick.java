@@ -172,7 +172,7 @@ public class Tick extends TickerBehaviour {
 			System.out.println("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
 
 			for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-				enviarGameOver(i);
+				enviarGameOver(i, Config.PIERDE);
 			enviarGameOveraMonitores("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
 			// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
 			CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
@@ -211,15 +211,15 @@ public class Tick extends TickerBehaviour {
 	}
 
 	/**
-	 * ENVIA EL FINAL DE LA PARTIDA A LOS INTEGRANTES DE UN EQUIPO
+	 * ENVIAR FIN A LOS EQUIPOS
 	 */
-	private void enviarGameOver(int equipo) {
+	private void enviarGameOver(int equipo,String FIN) {
 		List<Jugador> eq = CEREBRO.getEquipo(equipo);
 
 		Iterator<Jugador> it = eq.iterator();
 		while (it.hasNext()) {
 			Jugador j = it.next();
-			ACLMessage msg = j.enviar(String.valueOf(Config.GAME_OVER));
+			ACLMessage msg = j.enviar(FIN);
 			myAgent.send(msg);
 		}
 
@@ -283,8 +283,8 @@ public class Tick extends TickerBehaviour {
 
 		CEREBRO.estadisticas.add_muerte(j.getLocalName(), j.getEquipo(), c.getLocalName(), c.getEquipo());
 
-		ACLMessage msg_j = j.enviar(String.valueOf(Config.GAME_OVER));
-		ACLMessage msg_jc = c.enviar(String.valueOf(Config.GAME_OVER));
+		ACLMessage msg_j = j.enviar(Config.PIERDE);
+		ACLMessage msg_jc = c.enviar(Config.PIERDE);
 		myAgent.send(msg_j);
 		myAgent.send(msg_jc);
 
@@ -372,7 +372,11 @@ public class Tick extends TickerBehaviour {
 				// Ganador Equipo " + equi));
 
 				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-					enviarGameOver(i);
+					if(i!=j.getEquipo())
+						enviarGameOver(i,Config.PIERDE);
+					else
+						enviarGameOver(i,Config.GANA);
+						
 				enviarGameOveraMonitores("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()] + "\n Gracias al jugador: " + j.getLocalName());
 				// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
 				CEREBRO.partidaTXT.escribirPartidaFin("Ganador Equipo " + Config.Equipos[j.getEquipo()]
