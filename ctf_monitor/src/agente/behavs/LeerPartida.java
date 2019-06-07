@@ -66,13 +66,13 @@ public class LeerPartida extends TickerBehaviour {
 		} else if (ventana.getAlante()&& ticksCount < ticks.size()-1) {
 			ticksCount++;
 			sketch.update(ticks.get(ticksCount));
-			if(ticks.get(ticksCount).startsWith("\n\nGanador"))
+			if(ticks.get(ticksCount).startsWith("\n\nJuego"))
 				ventana.actInfoLector(ticks.get(ticksCount));
 			ventana.falseAlante();
 		} else if (ticksCount > 0 && ticksCount < ticks.size() && ventana.getPlay()) {
 			sketch.update(ticks.get(ticksCount));
 
-			if(ticks.get(ticksCount).startsWith("\n\nGanador"))
+			if(ticks.get(ticksCount).startsWith("\n\nJuego"))
 				ventana.actInfoLector(ticks.get(ticksCount));
 			ticksCount++;
 		}

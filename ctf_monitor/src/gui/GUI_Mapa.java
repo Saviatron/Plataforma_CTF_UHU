@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-
 package gui;
 
 import java.awt.Dimension;
@@ -72,7 +71,7 @@ public class GUI_Mapa extends PApplet {
 		mapa.cargarImagenes();
 		mapa.cargarFiguras3D();
 		texSuelo = Mapa.cesped2D;
-		
+
 		if (Config_GUI.SONIDO) {
 			new Sonido(this);
 		}
@@ -258,11 +257,13 @@ public class GUI_Mapa extends PApplet {
 	public void update(String mapa) {
 
 		// TODO:
-		if (mapa.startsWith("\n\nGanador")) {
+		if (mapa.startsWith("\n\nJuego")) {
 			System.out.println(mapa);
 			if (Config_GUI.SONIDO) {
-				Sonido.musicaPartida.close();
-				Sonido.musicaFin.play();
+				if (Sonido.musicaPartida.isPlaying()) {
+					Sonido.musicaPartida.pause();
+					Sonido.musicaFin.play();
+				}
 			}
 		} else
 			this.mapa.update(mapa);

@@ -30,6 +30,8 @@ import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentContainer;
+import jade.wrapper.ControllerException;
+import jade.wrapper.PlatformController;
 import jade.wrapper.StaleProxyException;
 import juegoCTF.Accion;
 import juegoCTF.Cerebro;
@@ -43,7 +45,7 @@ import juegoCTF.Posicion;
 public class Tick extends TickerBehaviour {
 
 	Cerebro CEREBRO;
-//	double Time = System.currentTimeMillis();
+	// double Time = System.currentTimeMillis();
 	int ticksCount = 0;
 
 	// private Random random = new Random(System.currentTimeMillis());
@@ -60,8 +62,9 @@ public class Tick extends TickerBehaviour {
 	 */
 	protected void onTick() {
 		if (ticksCount < Config.TicksMaximos) {
-//			System.out.println("Tick: " + (System.currentTimeMillis() - Time));
-//			Time = System.currentTimeMillis();
+			// System.out.println("Tick: " + (System.currentTimeMillis() -
+			// Time));
+			// Time = System.currentTimeMillis();
 
 			// System.out.println("\n\nNuevo TICK:");
 
@@ -144,6 +147,8 @@ public class Tick extends TickerBehaviour {
 						//// BAJANDO PENALIZACION
 						j.setPenalizacion(j.getPenalizacion() - 1);
 					}
+
+					CEREBRO.removeAccion(j);
 				}
 				lj.remove(en);
 			}
@@ -166,26 +171,29 @@ public class Tick extends TickerBehaviour {
 			//// ESCRIBIR TICK EN FICHERO
 			if (CEREBRO.hayJugadores())
 				CEREBRO.partidaTXT.escribirPartida(actualizacion);
-			
 			ticksCount++;
-		}else{
-			System.out.println("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+		} else {
+			System.out.println("Juego terminado por limite de Ticks: " + Config.TicksMaximos);
 
 			for (int i = 0; i < Config.NUM_EQUIPOS; i++)
 				enviarGameOver(i, Config.PIERDE);
-			enviarGameOveraMonitores("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+			enviarGameOveraMonitores("Juego terminado por limite de Ticks: " + Config.TicksMaximos);
 			// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
-			CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado por limite de Ticks: "+Config.TicksMaximos);
+			CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado por limite de Ticks: " + Config.TicksMaximos);
 			// CEREBRO.partidaTXT.cerrar();
-			CEREBRO.estadisticas.ganador(null,-1);
+			CEREBRO.estadisticas.ganador(null, -1);
 			CEREBRO.estadisticas.escribirEstadisticas();
 			// TODO: GENERAR ESTADISTICA DE PUNTUACION
 
-			myAgent.doDelete();
 			AgentContainer cont = myAgent.getContainerController();
+			myAgent.doDelete();
 			try {
-				cont.kill();
+				PlatformController pc = cont.getPlatformController();
+				pc.kill();
 			} catch (StaleProxyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ControllerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -200,11 +208,15 @@ public class Tick extends TickerBehaviour {
 
 		it = equipo.iterator();
 		while (it.hasNext()) {
-			Jugador jug = it.next();
-			ACLMessage msg = jug.enviarMapa(CEREBRO.ActualizarTableroaJugador(jug));
-			msg.setConversationId("actual");
-			myAgent.send(msg);
-			jug.setTiempoVida(jug.getTiempoVida() + 1);
+			try {
+				Jugador jug = it.next();
+				ACLMessage msg = jug.enviarMapa(CEREBRO.ActualizarTableroaJugador(jug));
+				msg.setConversationId("actual");
+				myAgent.send(msg);
+				jug.setTiempoVida(jug.getTiempoVida() + 1);
+			} catch (Exception e) {
+				System.out.println("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+			}
 
 		}
 
@@ -213,7 +225,7 @@ public class Tick extends TickerBehaviour {
 	/**
 	 * ENVIAR FIN A LOS EQUIPOS
 	 */
-	private void enviarGameOver(int equipo,String FIN) {
+	private void enviarGameOver(int equipo, String FIN) {
 		List<Jugador> eq = CEREBRO.getEquipo(equipo);
 
 		Iterator<Jugador> it = eq.iterator();
@@ -372,26 +384,29 @@ public class Tick extends TickerBehaviour {
 				// Ganador Equipo " + equi));
 
 				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-					if(i!=j.getEquipo())
-						enviarGameOver(i,Config.PIERDE);
+					if (i != j.getEquipo())
+						enviarGameOver(i, Config.PIERDE);
 					else
-						enviarGameOver(i,Config.GANA);
-						
-				enviarGameOveraMonitores("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()] + "\n Gracias al jugador: " + j.getLocalName());
+						enviarGameOver(i, Config.GANA);
+
+				enviarGameOveraMonitores("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()]
+						+ "\n Gracias al jugador: " + j.getLocalName());
 				// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
-				CEREBRO.partidaTXT.escribirPartidaFin("Ganador Equipo " + Config.Equipos[j.getEquipo()]
+				CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()]
 						+ "\n Gracias al jugador: " + j.getLocalName());
 				// CEREBRO.partidaTXT.cerrar();
 				CEREBRO.estadisticas.ganador(j.getLocalName(), j.getEquipo());
 				CEREBRO.estadisticas.escribirEstadisticas();
 				// TODO: GENERAR ESTADISTICA DE PUNTUACION
 
-				myAgent.doDelete();
+//				myAgent.doDelete();
 				AgentContainer cont = myAgent.getContainerController();
 				try {
-					cont.kill();
+					PlatformController pc = cont.getPlatformController();
+					pc.kill();
 				} catch (StaleProxyException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ControllerException e) {
 					e.printStackTrace();
 				}
 			} else
