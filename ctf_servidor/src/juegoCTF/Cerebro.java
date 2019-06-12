@@ -191,11 +191,13 @@ public class Cerebro implements Config {
 	}
 
 	public void removeJugador(int equipo, Jugador j) {
+		System.out.println("BORRAR JUAGDOR: "+j.getName());
 		jugadores[equipo].remove(j);
 		listaAcciones.remove(j);
 	}
 
 	public void removeJugador(int equipo, String nombre) {
+		System.out.println("BORRAR JUAGDOR POR NOMBRE: "+nombre);
 		jugadores[equipo].removeIf(j -> j.getName() == nombre);
 	}
 

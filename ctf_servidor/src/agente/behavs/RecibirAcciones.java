@@ -44,6 +44,7 @@ public class RecibirAcciones extends CyclicBehaviour {
 		ACLMessage accion = myAgent.receive(MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
 		if (accion != null) {
 			Jugador j = CEREBRO.getJugador(accion.getSender());
+//			System.out.println(accion.getSender().getName()+" - "+accion.getContent());
 
 			if (j != null) {
 				Accion acc = new Accion();

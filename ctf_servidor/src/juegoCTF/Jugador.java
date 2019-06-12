@@ -40,7 +40,7 @@ public class Jugador {
 	private int Life;
 	private int Strength;
 	private int penalizacion = 0;
-	private long tiempoVida = 0;
+	// private long tiempoVida = 0;
 	private Random r = new Random(System.currentTimeMillis());
 
 	// Se utiliza para desconectar al jugador en caso de inactividad
@@ -97,7 +97,7 @@ public class Jugador {
 
 	public void setAccion(Accion accion) {
 		this.accion = accion;
-		if (!accion.isIncorrecta() && !accion.isAbandonar() )
+		if (!accion.isIncorrecta() && !accion.isAbandonar())
 			if (config.Config.ORIENTACION_RELATIVA) {
 				grados += accion.getGrados();
 				while (grados < 0)
@@ -179,28 +179,35 @@ public class Jugador {
 		return m;
 	}
 
-	public void setTiempoVida(long tiempoVida) {
-		this.tiempoVida = tiempoVida;
-	}
-
-	public long getTiempoVida() {
-		return tiempoVida;
-	}
+	// public void setTiempoVida(long tiempoVida) {
+	// this.tiempoVida = tiempoVida;
+	// }
+	//
+	// public long getTiempoVida() {
+	// return tiempoVida;
+	// }
 
 	public boolean quedanTicks() {
 		return ticksSinEnviarAccion > 0;
 	}
 
 	public void resetTicks() {
+		// System.out.println("RESET TICK DE " + getName());
 		ticksSinEnviarAccion = Config.TICKS;
 	}
 
 	public void decrementarTicks() {
+		// System.out.println("DECREMNTO TICK DE " + getName());
 		ticksSinEnviarAccion -= 1;
 	}
 
 	public void vaciarTicks() {
-		ticksSinEnviarAccion -= 1;
+		// System.out.println("VACIO TICK DE " + getName());
+		ticksSinEnviarAccion = 0;
+	}
+
+	public int getTicks() {
+		return ticksSinEnviarAccion;
 	}
 
 	public String toString() {

@@ -38,6 +38,6 @@ public class GUI_Agent extends Agent {
 		if (Config_GUI.SERVIDOR)
 			addBehaviour(new Busqueda(sketch, ventana));
 		else
-			addBehaviour(new LeerPartida(this, 400, sketch, ventana));
+			addBehaviour(new LeerPartida(this, 500, sketch, ventana));
 	}
 }

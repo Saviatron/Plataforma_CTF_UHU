@@ -25,9 +25,15 @@ import java.util.List;
 import agente.behavs.grafico.Enviar_Grafico_Monitor;
 import agente.behavs.grafico.Enviar_Jugadores_Monitor;
 import config.Config;
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLCodec;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.FIPANames;
+import jade.domain.JADEAgentManagement.JADEManagementOntology;
+import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.ControllerException;
@@ -61,142 +67,163 @@ public class Tick extends TickerBehaviour {
 	 * CADA TICK DEL JUEGO
 	 */
 	protected void onTick() {
-		if (ticksCount < Config.TicksMaximos) {
-			// System.out.println("Tick: " + (System.currentTimeMillis() -
-			// Time));
-			// Time = System.currentTimeMillis();
+		System.out.println("Tick: " + ticksCount);
+		// for (int i = 0; i < Config.NUM_EQUIPOS; i++) {
+		// System.out.println("EQUIPO " + i + ": " +
+		// CEREBRO.getEquipo(i).size());
+		// }
+		// Time = System.currentTimeMillis();
 
-			// System.out.println("\n\nNuevo TICK:");
+		// System.out.println("\n\nNuevo TICK:");
 
-			// 1. Comprobar, SI SE HABILITA DESCONEXION, si hay alguno para
-			// desconectar.
-			if (Config.DESCONEXION)
-				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-					comprobarDesconexion(i);
+		// 1. Comprobar, SI SE HABILITA DESCONEXION, si hay alguno para
+		// desconectar.
+		if (Config.DESCONEXION)
+			for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+				comprobarDesconexion(i);
 
-			// 2. Recoger la lista de Jugadores que tienen acciones pendientes
-			Hashtable<Jugador, Accion> lj = CEREBRO.getListaAcciones();
+		// 2. Recoger la lista de Jugadores que tienen acciones pendientes
+		Hashtable<Jugador, Accion> lj = CEREBRO.getListaAcciones();
 
-			if (!lj.isEmpty()) {
+		if (!lj.isEmpty()) {
 
-				Enumeration<Jugador> en = lj.keys();
+			Enumeration<Jugador> en = lj.keys();
 
-				while (en.hasMoreElements()) {
+			while (en.hasMoreElements()) {
 
-					Jugador j = en.nextElement();
+				Jugador j = en.nextElement();
 
-					if (j == null)
-						continue;
+				if (j == null)
+					continue;
 
-					if (j.getPenalizacion() == 0) {
-						Posicion posAnt = j.getPosicion();
-						Posicion posFin = CEREBRO.calcularPos(j);
+				if (j.getPenalizacion() == 0) {
+					Posicion posAnt = j.getPosicion();
+					Posicion posFin = CEREBRO.calcularPos(j);
 
-						// Si hay pared:
-						if (CEREBRO.esPared(posFin)) {
-							System.out.println(j.getLocalName() + " -> CHOCA CON PARED");
-							posFin = posAnt;
-						}
-						// Si hay alguien de mi equipo:
-						else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null
-								&& CEREBRO.getJugador(j.getEquipo(), posFin) != j) {
-							System.out.println(j.getLocalName() + " -> CHOCA CON AMIGO");
-							posFin = posAnt;
-						}
-						// Si hay algun enemigo:
-						else if (CEREBRO.getEnemigo(j.getEquipo(), posFin) != null) {
-							System.out.println(j.getLocalName() + " -> ENTRA EN PELEA CON "
-									+ CEREBRO.getEnemigo(j.getEquipo(), posFin).getLocalName());
-							pelea(j, CEREBRO.getEnemigo(j.getEquipo(), posFin).getEquipo(), posFin);
-						}
-						// Si llegamos a nuestra base:
-						else if (posFin.equals(CEREBRO.getBase(j.getEquipo()))) {
-							System.out.println(j.getLocalName() + " -> LLEGA A BASE PROPIA");
-							llegarABasePropia(j, posFin, posAnt);
-						}
-						// Si llegamos a base contraria:
-						// TODO:
-						else if (CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin) != -1) {
-							System.out.println(j.getLocalName() + " -> LLEGA A BASE CONTRARIA");
-							j.setTieneBandera(CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin), true);
-						}
-						// Si cogemos nuestra bandera:
-						else if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
-							System.out.println(j.getLocalName() + " -> COGE BANDERA PROPIA");
-							CEREBRO.setBandera(j.getEquipo(), CEREBRO.getBase(j.getEquipo()));
-						}
-						// Si cogemos bandera contraria:
-						else if (CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin) != -1) {
-							System.out.println(j.getLocalName() + " -> COGE BANDERA CONTRARIA");
-							j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
-						} else {
-							// TODO: ESTO ES UN ELSE????
-							for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-								if (j.isTieneBandera(i))
-									CEREBRO.setBandera(i, posFin);
-						}
-
-						j.setPosicion(posFin);
-						CEREBRO.estadisticas.add_tick(j.getLocalName(), j.getEquipo());
-						// System.out.println("Nueva pos : " + j.getName() + "
-						// acc:
-						// " + j.getPosicion());
-
-						// PENALIZACION > 0
+					// Si hay pared:
+					if (CEREBRO.esPared(posFin)) {
+						System.out.println(j.getLocalName() + " -> CHOCA CON PARED");
+						posFin = posAnt;
+					}
+					// Si hay alguien de mi equipo:
+					else if (CEREBRO.getJugador(j.getEquipo(), posFin) != null
+							&& CEREBRO.getJugador(j.getEquipo(), posFin) != j) {
+						System.out.println(j.getLocalName() + " -> CHOCA CON AMIGO");
+						posFin = posAnt;
+					}
+					// Si hay algun enemigo:
+					else if (CEREBRO.getEnemigo(j.getEquipo(), posFin) != null) {
+						System.out.println(j.getLocalName() + " -> ENTRA EN PELEA CON "
+								+ CEREBRO.getEnemigo(j.getEquipo(), posFin).getLocalName());
+						pelea(j, CEREBRO.getEnemigo(j.getEquipo(), posFin).getEquipo(), posFin);
+					}
+					// Si llegamos a nuestra base:
+					else if (posFin.equals(CEREBRO.getBase(j.getEquipo()))) {
+						System.out.println(j.getLocalName() + " -> LLEGA A BASE PROPIA");
+						llegarABasePropia(j, posFin, posAnt);
+					}
+					// Si llegamos a base contraria:
+					// TODO:
+					else if (CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin) != -1) {
+						System.out.println(j.getLocalName() + " -> LLEGA A BASE CONTRARIA");
+						j.setTieneBandera(CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin), true);
+					}
+					// Si cogemos nuestra bandera:
+					else if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
+						System.out.println(j.getLocalName() + " -> COGE BANDERA PROPIA");
+						CEREBRO.setBandera(j.getEquipo(), CEREBRO.getBase(j.getEquipo()));
+					}
+					// Si cogemos bandera contraria:
+					else if (CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin) != -1) {
+						System.out.println(j.getLocalName() + " -> COGE BANDERA CONTRARIA");
+						j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
 					} else {
-						//// BAJANDO PENALIZACION
-						j.setPenalizacion(j.getPenalizacion() - 1);
+						// TODO: ESTO ES UN ELSE????
+						for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+							if (j.isTieneBandera(i))
+								CEREBRO.setBandera(i, posFin);
 					}
 
-					CEREBRO.removeAccion(j);
+					j.setPosicion(posFin);
+					CEREBRO.estadisticas.add_tick(j.getLocalName(), j.getEquipo());
+					// System.out.println("Nueva pos : " + j.getName() + "
+					// acc:
+					// " + j.getPosicion());
+
+					// PENALIZACION > 0
+				} else {
+					//// BAJANDO PENALIZACION
+					j.setPenalizacion(j.getPenalizacion() - 1);
 				}
-				lj.remove(en);
+
+				CEREBRO.removeAccion(j);
 			}
+			lj.remove(en);
+		}
 
-			//// UNA VEZ TERMINADO... SE INFORMA A _TODO_ EL MUNDO DEL NUEVO
-			//// CICLO
-			if (Config.DESCONEXION)
-				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-					Actualizacion(CEREBRO.getEquipo(i));
+		//// UNA VEZ TERMINADO... SE INFORMA A _TODO_ EL MUNDO DEL NUEVO
+		//// CICLO
+		for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+			Actualizacion(CEREBRO.getEquipo(i));
 
-			//// INFORMAR A LOS MONITORES
-			// Al escribir, borramos muertes para pintarlas 1 vez. Al
-			//// partida.txt
-			//// llegaban borradas
-			String actualizacion = CEREBRO.ActualizarTableroaMonitor();
-			if (!CEREBRO.getMonitores().isEmpty()) {
-				myAgent.addBehaviour(new Enviar_Grafico_Monitor(actualizacion, CEREBRO.getMonitores()));
-			}
+		//// INFORMAR A LOS MONITORES
+		// Al escribir, borramos muertes para pintarlas 1 vez. Al
+		//// partida.txt
+		//// llegaban borradas
+		String actualizacion = CEREBRO.ActualizarTableroaMonitor();
+		if (!CEREBRO.getMonitores().isEmpty()) {
+			myAgent.addBehaviour(new Enviar_Grafico_Monitor(actualizacion, CEREBRO.getMonitores()));
+		}
 
-			//// ESCRIBIR TICK EN FICHERO
-			if (CEREBRO.hayJugadores())
-				CEREBRO.partidaTXT.escribirPartida(actualizacion);
-			ticksCount++;
-		} else {
+		//// ESCRIBIR TICK EN FICHERO
+		if (CEREBRO.hayJugadores())
+			CEREBRO.partidaTXT.escribirPartida(actualizacion);
+		ticksCount++;
+		if (ticksCount > Config.TicksMaximos) {
+			////////////////////////////////////////////////////////////////////////////////////////
 			System.out.println("Juego terminado por limite de Ticks: " + Config.TicksMaximos);
 
 			for (int i = 0; i < Config.NUM_EQUIPOS; i++)
 				enviarGameOver(i, Config.PIERDE);
 			enviarGameOveraMonitores("Juego terminado por limite de Ticks: " + Config.TicksMaximos);
-			// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
 			CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado por limite de Ticks: " + Config.TicksMaximos);
-			// CEREBRO.partidaTXT.cerrar();
 			CEREBRO.estadisticas.ganador(null, -1);
 			CEREBRO.estadisticas.escribirEstadisticas();
-			// TODO: GENERAR ESTADISTICA DE PUNTUACION
 
-			AgentContainer cont = myAgent.getContainerController();
-			myAgent.doDelete();
 			try {
-				PlatformController pc = cont.getPlatformController();
-				pc.kill();
-			} catch (StaleProxyException e) {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ControllerException e) {
-				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("Empiezo a cerrar...");
+			ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
+			Codec codec = new SLCodec();
+			myAgent.getContentManager().registerLanguage(codec);
+			myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
+			shutdownMessage.addReceiver(myAgent.getAMS());
+			shutdownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+			shutdownMessage.setOntology(JADEManagementOntology.getInstance().getName());
+			try {
+				myAgent.getContentManager().fillContent(shutdownMessage,
+						new Action(myAgent.getAID(), new ShutdownPlatform()));
+				myAgent.send(shutdownMessage);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			System.out.println("Cierro...");
+			// try {
+			// AgentContainer cont = myAgent.getContainerController();
+			// PlatformController pc = cont.getPlatformController();
+			// // cont.kill();
+			// pc.kill();
+			// myAgent.doDelete();
+			// } catch (StaleProxyException e) {
+			// e.printStackTrace();
+			// } catch (ControllerException e) {
+			// e.printStackTrace();
+			// }
+			// System.out.println("Kill...");
 		}
 	}
 
@@ -210,12 +237,13 @@ public class Tick extends TickerBehaviour {
 		while (it.hasNext()) {
 			try {
 				Jugador jug = it.next();
+				// System.out.println("ACTUALIZO " + jug.getName());
 				ACLMessage msg = jug.enviarMapa(CEREBRO.ActualizarTableroaJugador(jug));
 				msg.setConversationId("actual");
 				myAgent.send(msg);
-				jug.setTiempoVida(jug.getTiempoVida() + 1);
+				// jug.setTiempoVida(jug.getTiempoVida() + 1);
 			} catch (Exception e) {
-				System.out.println("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+				e.printStackTrace();
 			}
 
 		}
@@ -264,9 +292,12 @@ public class Tick extends TickerBehaviour {
 		Iterator<Jugador> it = eq.iterator();
 		while (it.hasNext()) {
 			Jugador j = it.next();
-			if (!j.quedanTicks())
+			if (!j.quedanTicks()) {
+//				System.out.println("BORRAR POR TICKS: " + j.getName());
 				BORRAR.add(j);
-			else
+				ACLMessage msg = j.enviar(Config.PIERDE);
+				myAgent.send(msg);
+			} else
 				j.decrementarTicks();
 		}
 		eq.removeAll(BORRAR);
@@ -378,10 +409,6 @@ public class Tick extends TickerBehaviour {
 
 				System.out.println("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()]
 						+ "\n Gracias al jugador: " + j.getLocalName());
-				// myAgent.addBehaviour(new
-				// Enviar_Informacion_Monitor("Juego
-				// terminado:
-				// Ganador Equipo " + equi));
 
 				for (int i = 0; i < Config.NUM_EQUIPOS; i++)
 					if (i != j.getEquipo())
@@ -391,30 +418,46 @@ public class Tick extends TickerBehaviour {
 
 				enviarGameOveraMonitores("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()]
 						+ "\n Gracias al jugador: " + j.getLocalName());
-				// CEREBRO.partidaTXT.escribirPartida(CEREBRO.ActualizarTableroaMonitor());
 				CEREBRO.partidaTXT.escribirPartidaFin("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()]
 						+ "\n Gracias al jugador: " + j.getLocalName());
-				// CEREBRO.partidaTXT.cerrar();
 				CEREBRO.estadisticas.ganador(j.getLocalName(), j.getEquipo());
 				CEREBRO.estadisticas.escribirEstadisticas();
-				// TODO: GENERAR ESTADISTICA DE PUNTUACION
 
-//				myAgent.doDelete();
-				AgentContainer cont = myAgent.getContainerController();
 				try {
-					PlatformController pc = cont.getPlatformController();
-					pc.kill();
-				} catch (StaleProxyException e) {
-					e.printStackTrace();
-				} catch (ControllerException e) {
+					Thread.sleep(5000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println("Empiezo a cerrar...");
+				ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
+				Codec codec = new SLCodec();
+				myAgent.getContentManager().registerLanguage(codec);
+				myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
+				shutdownMessage.addReceiver(myAgent.getAMS());
+				shutdownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+				shutdownMessage.setOntology(JADEManagementOntology.getInstance().getName());
+				try {
+					myAgent.getContentManager().fillContent(shutdownMessage,
+							new Action(myAgent.getAID(), new ShutdownPlatform()));
+					myAgent.send(shutdownMessage);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				System.out.println("Cierro...");
+				// AgentContainer cont = myAgent.getContainerController();
+				// try {
+				// PlatformController pc = cont.getPlatformController();
+				// pc.kill();
+				// } catch (StaleProxyException e) {
+				// e.printStackTrace();
+				// } catch (ControllerException e) {
+				// e.printStackTrace();
+				// }
 			} else
 				posFin = posAnt;
 
 		} else {
-			// Si no llevo bandera no puedo pisar la base
-			// propia
 			posFin = posAnt;
 
 		}
