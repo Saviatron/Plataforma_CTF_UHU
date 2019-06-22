@@ -25,9 +25,15 @@ import java.util.List;
 import agente.behavs.grafico.Enviar_Grafico_Monitor;
 import agente.behavs.grafico.Enviar_Jugadores_Monitor;
 import config.Config;
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLCodec;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.FIPANames;
+import jade.domain.JADEAgentManagement.JADEManagementOntology;
+import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import juegoCTF.Accion;
 import juegoCTF.Cerebro;
@@ -195,8 +201,22 @@ public class Tick extends TickerBehaviour {
 			CEREBRO.estadisticas.ganador(null, -1);
 			CEREBRO.estadisticas.escribirEstadisticas();
 
-			myAgent.addBehaviour(new Cerrar());
-			// try {
+			System.out.println("Empiezo a cerrar...");
+			ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
+			Codec codec = new SLCodec();
+			myAgent.getContentManager().registerLanguage(codec);
+			myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
+			shutdownMessage.addReceiver(myAgent.getAMS());
+			shutdownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+			shutdownMessage.setOntology(JADEManagementOntology.getInstance().getName());
+			try {
+				myAgent.getContentManager().fillContent(shutdownMessage,
+						new Action(myAgent.getAID(), new ShutdownPlatform()));
+				myAgent.send(shutdownMessage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("Cierro...");			// try {
 			// AgentContainer cont = myAgent.getContainerController();
 			// PlatformController pc = cont.getPlatformController();
 			// // cont.kill();
@@ -407,8 +427,22 @@ public class Tick extends TickerBehaviour {
 				CEREBRO.estadisticas.ganador(j.getLocalName(), j.getEquipo());
 				CEREBRO.estadisticas.escribirEstadisticas();
 
-				myAgent.addBehaviour(new Cerrar());
-
+				System.out.println("Empiezo a cerrar...");
+				ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
+				Codec codec = new SLCodec();
+				myAgent.getContentManager().registerLanguage(codec);
+				myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
+				shutdownMessage.addReceiver(myAgent.getAMS());
+				shutdownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+				shutdownMessage.setOntology(JADEManagementOntology.getInstance().getName());
+				try {
+					myAgent.getContentManager().fillContent(shutdownMessage,
+							new Action(myAgent.getAID(), new ShutdownPlatform()));
+					myAgent.send(shutdownMessage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("Cierro...");
 				// AgentContainer cont = myAgent.getContainerController();
 				// try {
 				// PlatformController pc = cont.getPlatformController();
