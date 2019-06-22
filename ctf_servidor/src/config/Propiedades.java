@@ -19,32 +19,38 @@ package config;
 
 import java.util.Properties;
 import java.util.HashMap;
+import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 
 /**
  * CLASE QUE LEE LA CONFIGURACION DEL FICHERO CONFIG
  */
 public class Propiedades {
 
-	private static final String CONFIGURATION_FILE = "./servidorConfig.cfg";
+	public final String CONFIGURATION_FILE = "./servidorConfig.cfg";
 
-	private static HashMap<Object, Object> propiedades;
+	public HashMap<Object, Object> propiedades;
 
-	static {
+
+	public Propiedades() {
 		try {
+
+			File config=new File("./servidorConfig.cfg");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			
+			System.out.println("EN SERVIDOR modify : " + sdf.format(config.lastModified()));
 			FileInputStream f = new FileInputStream(CONFIGURATION_FILE);
 			Properties propiedadesTemporales = new Properties();
 			propiedadesTemporales.load(f);
 			f.close();
 			propiedades = new HashMap<Object, Object>(propiedadesTemporales);
+			propiedades.forEach((k,v) -> System.out.println("Key: " + k + ": Value: " + v));
 		} catch (Exception e) {
 		}
 	}
 
-	private Propiedades() {
-	}
-
-	public static String getPropiedad(String nombre) {
+	public String getPropiedad(String nombre) {
 		String valor = (String) propiedades.get(nombre);
 		if (valor == null)
 			System.err.println("No existe la propiedad: "+ nombre);

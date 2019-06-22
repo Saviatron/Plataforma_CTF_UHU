@@ -19,6 +19,8 @@ package config;
 
 public interface Config {
 
+	public Propiedades prop=new Propiedades();
+	
 	/**
 	 * VERSION
 	 */
@@ -38,11 +40,11 @@ public interface Config {
 	public static final String MapaPath = "mapas" + System.getProperty("file.separator");
 	public static final String MapaDefecto = "blanco.txt";
 	public static final String ContenidoDefecto = "blanco_2.ini";
-	public static final String Mapa = Propiedades.getPropiedad("MAPA");
-	public static final String Contenido = Propiedades.getPropiedad("CONTENIDO");
+	public final String Mapa = prop.getPropiedad("MAPA");
+	public final String Contenido = prop.getPropiedad("CONTENIDO");
 
-	public static final String NOMBRE_SERVICIO = Propiedades.getPropiedad("NOMBRE_SERVICIO");
-	public static final String TIPO_SERVICIO = Propiedades.getPropiedad("TIPO_SERVICIO");
+	public final String NOMBRE_SERVICIO = prop.getPropiedad("NOMBRE_SERVICIO");
+	public final String TIPO_SERVICIO = prop.getPropiedad("TIPO_SERVICIO");
 
 	/**
 	 * ACCIONES
@@ -67,29 +69,29 @@ public interface Config {
 	 * CONFIGURACION EXTERNA
 	 */
 	// TICKS PARA LA DESCONEXION
-	public static final int TICKS = Integer.parseInt(Propiedades.getPropiedad("TICKS"));
-	public static final boolean DESCONEXION = Boolean.valueOf((Propiedades.getPropiedad("DESCONEXION")));
+	public final int TICKS = Integer.parseInt(prop.getPropiedad("TICKS"));
+	public final boolean DESCONEXION = Boolean.valueOf((prop.getPropiedad("DESCONEXION")));
 
 	// NUM MAXIMO JUGADORES POR EQUIPO
-	public static final int MAX_JUGADORES_EQ = Integer.parseInt(Propiedades.getPropiedad("MAX_JUGADORES_EQ"));
+	public final int MAX_JUGADORES_EQ = Integer.parseInt(prop.getPropiedad("MAX_JUGADORES_EQ"));
 
 	// NUM MAXIMO DE EQUIPOS
-	public static final int NUM_EQUIPOS = Integer.parseInt(Propiedades.getPropiedad("NUM_EQUIPOS"));
+	public final int NUM_EQUIPOS = Integer.parseInt(prop.getPropiedad("NUM_EQUIPOS"));
 
 	// TIEMPO DE TICK (en ms)
-	public static final int TiempoTick = Integer.parseInt(Propiedades.getPropiedad("TiempoTick"));
+	public final int TiempoTick = Integer.parseInt(prop.getPropiedad("TiempoTick"));
 	
 	// TICKS MAXIMOS
-	public static final int TicksMaximos = Integer.parseInt(Propiedades.getPropiedad("TicksMaximos"));
+	public final int TicksMaximos = Integer.parseInt(prop.getPropiedad("TicksMaximos"));
 
-	public static double TASA_RECHAZO = Double.parseDouble(Propiedades.getPropiedad("TASA_RECHAZO"));
+	public double TASA_RECHAZO = Double.parseDouble(prop.getPropiedad("TASA_RECHAZO"));
 
 	// ORIENTACION RELATIVA
-	public static boolean ORIENTACION_RELATIVA = Boolean.valueOf(Propiedades.getPropiedad("ORIENTACION_RELATIVA"));
+	public boolean ORIENTACION_RELATIVA = Boolean.valueOf(prop.getPropiedad("ORIENTACION_RELATIVA"));
 
 	// VISION PARCIAL
-	public static boolean VISION_PARCIAL = Boolean.valueOf(Propiedades.getPropiedad("VISION_PARCIAL"));
-	public static int ALCANCE = Integer.parseInt(Propiedades.getPropiedad("ALCANCE"));
-	public static int ANCHO = Integer.parseInt(Propiedades.getPropiedad("ANCHO"));
+	public boolean VISION_PARCIAL = Boolean.valueOf(prop.getPropiedad("VISION_PARCIAL"));
+	public int ALCANCE = Integer.parseInt(prop.getPropiedad("ALCANCE"));
+	public int ANCHO = Integer.parseInt(prop.getPropiedad("ANCHO"));
 
 }
