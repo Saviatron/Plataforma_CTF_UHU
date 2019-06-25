@@ -25,15 +25,12 @@ import java.util.List;
 import agente.behavs.grafico.Enviar_Grafico_Monitor;
 import agente.behavs.grafico.Enviar_Jugadores_Monitor;
 import config.Config;
-import jade.content.lang.Codec;
-import jade.content.lang.sl.SLCodec;
-import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
-import jade.domain.FIPANames;
-import jade.domain.JADEAgentManagement.JADEManagementOntology;
-import jade.domain.JADEAgentManagement.ShutdownPlatform;
+import jade.domain.AMSService;
+import jade.domain.FIPAAgentManagement.AMSAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.lang.acl.ACLMessage;
 import juegoCTF.Accion;
 import juegoCTF.Cerebro;
@@ -64,28 +61,20 @@ public class Tick extends TickerBehaviour {
 	 */
 	protected void onTick() {
 		System.out.println("//////////////////////////////////////////////////////Tick: " + ticksCount);
-		//
-		// AMSAgentDescription [] agents = null;
-		//
-		// try {
-		// SearchConstraints c = new SearchConstraints();
-		// c.setMaxResults ( new Long(-1) );
-		// agents = AMSService.search( myAgent, new AMSAgentDescription (), c );
-		// }
-		// catch (Exception e) { }
-		//
+
+		AMSAgentDescription[] agents = null;
+
+		try {
+			SearchConstraints c = new SearchConstraints();
+			c.setMaxResults(new Long(-1));
+			agents = AMSService.search(myAgent, new AMSAgentDescription(), c);
+		} catch (Exception e) {
+		}
+		System.out.println("Hay " + agents.length + " Agentes unidos a la plataforma JADE.");
 		// for (int i=0; i<agents.length;i++){
 		// AID agentID = agents[i].getName();
 		// System.out.println(agentID.getLocalName());
 		// }
-
-		// for (int i = 0; i < Config.NUM_EQUIPOS; i++) {
-		// System.out.println("EQUIPO " + i + ": " +
-		// CEREBRO.getEquipo(i).size());
-		// }
-		// Time = System.currentTimeMillis();
-
-		// System.out.println("\n\nNuevo TICK:");
 
 		// 1. Comprobar, SI SE HABILITA DESCONEXION, si hay alguno para
 		// desconectar.
@@ -132,12 +121,16 @@ public class Tick extends TickerBehaviour {
 					else if (posFin.equals(CEREBRO.getBase(j.getEquipo()))) {
 						System.out.println(j.getLocalName() + " -> LLEGA A BASE PROPIA");
 						llegarABasePropia(j, posFin, posAnt);
+						posFin = posAnt;
 					}
 					// Si llegamos a base contraria:
 					// TODO:
 					else if (CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin) != -1) {
 						System.out.println(j.getLocalName() + " -> LLEGA A BASE CONTRARIA");
-						j.setTieneBandera(CEREBRO.getBaseContrariaEn(j.getEquipo(), posFin), true);
+						if (CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin) != -1) {
+							System.out.println(j.getLocalName() + " -> COGE BANDERA CONTRARIA");
+							j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
+						}
 					}
 					// Si cogemos nuestra bandera:
 					else if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
@@ -148,12 +141,11 @@ public class Tick extends TickerBehaviour {
 					else if (CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin) != -1) {
 						System.out.println(j.getLocalName() + " -> COGE BANDERA CONTRARIA");
 						j.setTieneBandera(CEREBRO.getBanderaContrariaEn(j.getEquipo(), posFin), true);
-					} else {
-						// TODO: ESTO ES UN ELSE????
-						for (int i = 0; i < Config.NUM_EQUIPOS; i++)
-							if (j.isTieneBandera(i))
-								CEREBRO.setBandera(i, posFin);
 					}
+
+					for (int i = 0; i < Config.NUM_EQUIPOS; i++)
+						if (j.isTieneBandera(i))
+							CEREBRO.setBandera(i, posFin);
 
 					j.setPosicion(posFin);
 					CEREBRO.estadisticas.add_tick(j.getLocalName(), j.getEquipo());
@@ -201,22 +193,9 @@ public class Tick extends TickerBehaviour {
 			CEREBRO.estadisticas.ganador(null, -1);
 			CEREBRO.estadisticas.escribirEstadisticas();
 
-			System.out.println("Empiezo a cerrar...");
-			ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
-			Codec codec = new SLCodec();
-			myAgent.getContentManager().registerLanguage(codec);
-			myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
-			shutdownMessage.addReceiver(myAgent.getAMS());
-			shutdownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-			shutdownMessage.setOntology(JADEManagementOntology.getInstance().getName());
-			try {
-				myAgent.getContentManager().fillContent(shutdownMessage,
-						new Action(myAgent.getAID(), new ShutdownPlatform()));
-				myAgent.send(shutdownMessage);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			System.out.println("Cierro...");			// try {
+			myAgent.addBehaviour(new Cerrar());
+			myAgent.removeBehaviour(this);
+			// try {
 			// AgentContainer cont = myAgent.getContainerController();
 			// PlatformController pc = cont.getPlatformController();
 			// // cont.kill();
@@ -408,7 +387,6 @@ public class Tick extends TickerBehaviour {
 			posFin = posAnt;
 
 		} else if (j.isTieneAlgunaBandera()) {
-
 			if (posFin.equals(CEREBRO.getBandera(j.getEquipo()))) {
 
 				System.out.println("Juego terminado: Ganador Equipo " + Config.Equipos[j.getEquipo()]
@@ -427,38 +405,12 @@ public class Tick extends TickerBehaviour {
 				CEREBRO.estadisticas.ganador(j.getLocalName(), j.getEquipo());
 				CEREBRO.estadisticas.escribirEstadisticas();
 
-				System.out.println("Empiezo a cerrar...");
-				ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
-				Codec codec = new SLCodec();
-				myAgent.getContentManager().registerLanguage(codec);
-				myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
-				shutdownMessage.addReceiver(myAgent.getAMS());
-				shutdownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-				shutdownMessage.setOntology(JADEManagementOntology.getInstance().getName());
-				try {
-					myAgent.getContentManager().fillContent(shutdownMessage,
-							new Action(myAgent.getAID(), new ShutdownPlatform()));
-					myAgent.send(shutdownMessage);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				System.out.println("Cierro...");
-				// AgentContainer cont = myAgent.getContainerController();
-				// try {
-				// PlatformController pc = cont.getPlatformController();
-				// pc.kill();
-				// } catch (StaleProxyException e) {
-				// e.printStackTrace();
-				// } catch (ControllerException e) {
-				// e.printStackTrace();
-				// }
+				myAgent.addBehaviour(new Cerrar());
+				myAgent.removeBehaviour(this);
 			} else
 				posFin = posAnt;
-
 		} else {
 			posFin = posAnt;
-
 		}
 	}
-
 }

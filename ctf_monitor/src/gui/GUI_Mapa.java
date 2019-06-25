@@ -49,6 +49,46 @@ public class GUI_Mapa extends PApplet {
 	private float eyeX, eyeY, eyeXJug, eyeYJug, eyeZ, centerX, centerY, centerZ;
 	private float SPEED = 10;
 
+	public GUI_Mapa(String msg) {
+
+		// System.out.println(msg);
+		StringTokenizer linea = new StringTokenizer(msg, "\n");
+
+		StringTokenizer linea1 = new StringTokenizer(linea.nextToken(), ",");
+		titulo = linea1.nextToken();
+		int mapaX = Integer.parseInt(linea1.nextToken());
+		int mapaY = Integer.parseInt(linea1.nextToken());
+		Config_GUI.NUM_EQUIPOS = Integer.parseInt(linea1.nextToken());
+		String mapa = linea1.nextToken();
+
+		System.out.println("-------------------- INICIALIZAR SKETCH --------------------");
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenX = screenSize.width - 220 * (int) Math.ceil((float) Config_GUI.NUM_EQUIPOS / 4); // 1116
+		int screenY = screenSize.height - 60; // 708
+
+		Config_GUI.ANCHO_CASILLA = screenX / mapaX;
+		Config_GUI.ALTO_CASILLA = screenY / mapaY;
+
+		if (Config_GUI.ANCHO_CASILLA <= Config_GUI.ALTO_CASILLA)
+			Config_GUI.ALTO_CASILLA = Config_GUI.ANCHO_CASILLA;
+		else
+			Config_GUI.ANCHO_CASILLA = Config_GUI.ALTO_CASILLA;
+
+		sizeSketchX = (Config_GUI.ANCHO_CASILLA * mapaX);
+		sizeSketchY = (Config_GUI.ALTO_CASILLA * mapaY);
+
+		// TODO
+		// sizeSketchZ=(int) ((height / 2) / tan(PI / 7));
+		sizeSketchZ = Math.max(sizeSketchX, sizeSketchY);
+
+		System.out.println("Ventana Máxima (Pixels): " + screenX + "," + screenY);
+		System.out.println("Mapa (Casillas): " + mapaX + "," + mapaY);
+		System.out.println("Tamaño casillas (Pixels): " + Config_GUI.ANCHO_CASILLA + ", " + Config_GUI.ALTO_CASILLA);
+		System.out.println("Tamaño del sketch (Pixels): " + sizeSketchX + ", " + sizeSketchY);
+
+		this.mapa = new Mapa(mapaX, mapaY, mapa, msg, this);
+	
+	}
 	public void settings() {
 		size(sizeSketchX, sizeSketchY, P3D);
 	}
@@ -214,45 +254,45 @@ public class GUI_Mapa extends PApplet {
 		this.is3D = is3D;
 	}
 
-	public void initMapa(String msg) {
-
-		// System.out.println(msg);
-		StringTokenizer linea = new StringTokenizer(msg, "\n");
-
-		StringTokenizer linea1 = new StringTokenizer(linea.nextToken(), ",");
-		titulo = linea1.nextToken();
-		int mapaX = Integer.parseInt(linea1.nextToken());
-		int mapaY = Integer.parseInt(linea1.nextToken());
-		Config_GUI.NUM_EQUIPOS = Integer.parseInt(linea1.nextToken());
-		String mapa = linea1.nextToken();
-
-		System.out.println("-------------------- INICIALIZAR SKETCH --------------------");
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenX = screenSize.width - 220 * (int) Math.ceil((float) Config_GUI.NUM_EQUIPOS / 4); // 1116
-		int screenY = screenSize.height - 60; // 708
-
-		Config_GUI.ANCHO_CASILLA = screenX / mapaX;
-		Config_GUI.ALTO_CASILLA = screenY / mapaY;
-
-		if (Config_GUI.ANCHO_CASILLA <= Config_GUI.ALTO_CASILLA)
-			Config_GUI.ALTO_CASILLA = Config_GUI.ANCHO_CASILLA;
-		else
-			Config_GUI.ANCHO_CASILLA = Config_GUI.ALTO_CASILLA;
-
-		sizeSketchX = (Config_GUI.ANCHO_CASILLA * mapaX);
-		sizeSketchY = (Config_GUI.ALTO_CASILLA * mapaY);
-
-		// TODO
-		// sizeSketchZ=(int) ((height / 2) / tan(PI / 7));
-		sizeSketchZ = Math.max(sizeSketchX, sizeSketchY);
-
-		System.out.println("Ventana Máxima (Pixels): " + screenX + "," + screenY);
-		System.out.println("Mapa (Casillas): " + mapaX + "," + mapaY);
-		System.out.println("Tamaño casillas (Pixels): " + Config_GUI.ANCHO_CASILLA + ", " + Config_GUI.ALTO_CASILLA);
-		System.out.println("Tamaño del sketch (Pixels): " + sizeSketchX + ", " + sizeSketchY);
-
-		this.mapa = new Mapa(mapaX, mapaY, mapa, msg, this);
-	}
+//	public void initMapa(String msg) {
+//
+//		// System.out.println(msg);
+//		StringTokenizer linea = new StringTokenizer(msg, "\n");
+//
+//		StringTokenizer linea1 = new StringTokenizer(linea.nextToken(), ",");
+//		titulo = linea1.nextToken();
+//		int mapaX = Integer.parseInt(linea1.nextToken());
+//		int mapaY = Integer.parseInt(linea1.nextToken());
+//		Config_GUI.NUM_EQUIPOS = Integer.parseInt(linea1.nextToken());
+//		String mapa = linea1.nextToken();
+//
+//		System.out.println("-------------------- INICIALIZAR SKETCH --------------------");
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//		int screenX = screenSize.width - 220 * (int) Math.ceil((float) Config_GUI.NUM_EQUIPOS / 4); // 1116
+//		int screenY = screenSize.height - 60; // 708
+//
+//		Config_GUI.ANCHO_CASILLA = screenX / mapaX;
+//		Config_GUI.ALTO_CASILLA = screenY / mapaY;
+//
+//		if (Config_GUI.ANCHO_CASILLA <= Config_GUI.ALTO_CASILLA)
+//			Config_GUI.ALTO_CASILLA = Config_GUI.ANCHO_CASILLA;
+//		else
+//			Config_GUI.ANCHO_CASILLA = Config_GUI.ALTO_CASILLA;
+//
+//		sizeSketchX = (Config_GUI.ANCHO_CASILLA * mapaX);
+//		sizeSketchY = (Config_GUI.ALTO_CASILLA * mapaY);
+//
+//		// TODO
+//		// sizeSketchZ=(int) ((height / 2) / tan(PI / 7));
+//		sizeSketchZ = Math.max(sizeSketchX, sizeSketchY);
+//
+//		System.out.println("Ventana Máxima (Pixels): " + screenX + "," + screenY);
+//		System.out.println("Mapa (Casillas): " + mapaX + "," + mapaY);
+//		System.out.println("Tamaño casillas (Pixels): " + Config_GUI.ANCHO_CASILLA + ", " + Config_GUI.ALTO_CASILLA);
+//		System.out.println("Tamaño del sketch (Pixels): " + sizeSketchX + ", " + sizeSketchY);
+//
+//		this.mapa = new Mapa(mapaX, mapaY, mapa, msg, this);
+//	}
 
 	public void update(String mapa) {
 

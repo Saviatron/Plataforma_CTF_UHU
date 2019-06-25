@@ -42,13 +42,13 @@ public class LeerPartida extends TickerBehaviour {
 
 	public LeerPartida(Agent a, long period, GUI_Mapa sketch, GUI_Interactuar ventana) {
 		super(a, period);
-		this.sketch = new GUI_Mapa();
 		lector = new LeerFichero(Config_GUI.partida);
 		partida = lector.leerContenido();
 		st = new StringTokenizer(partida, ";");
 		while (st.hasMoreTokens())
 			ticks.add(st.nextToken());
-		this.sketch.initMapa(ticks.get(0));
+		this.sketch = new GUI_Mapa(ticks.get(0));
+//		this.sketch.initMapa(ticks.get(0));
 		this.ventana = new GUI_Interactuar("Panel de Control", ticks.get(0), this.sketch, true);
 		this.sketch.run();
 		this.ventana.setVisible(true);

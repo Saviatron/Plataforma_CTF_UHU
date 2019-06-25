@@ -55,8 +55,8 @@ public class MiRequest extends SimpleAchieveREInitiator {
 
 	public void handleInform(ACLMessage msg) {
 		// Si nos han aceptado
-		sketch = new GUI_Mapa();
-		sketch.initMapa(msg.getContent());
+		sketch = new GUI_Mapa(msg.getContent());
+//		sketch.initMapa(msg.getContent());
 		ventana = new GUI_Interactuar("Panel de Control", msg.getContent(), sketch, false);
 		sketch.run();
 		ventana.setVisible(true);

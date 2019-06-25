@@ -256,7 +256,7 @@ public class Mapa {
 		jugador_banderaS2D = parent.loadImage("img/jugadorBanderaSur.jpg");
 		jugador_banderaSW2D = parent.loadImage("img/jugadorBanderaSurOeste.jpg");
 		jugador_banderaW2D = parent.loadImage("img/jugadorBanderaOeste.jpg");
-		jugador_banderaNW2D = parent.loadImage("img/jugadorNorOeste.jpg");
+		jugador_banderaNW2D = parent.loadImage("img/jugadorBanderaNorOeste.jpg");
 		bandera2D = parent.loadImage("img/bandera.jpg");
 		base_bandera2D = parent.loadImage("img/base_bandera.jpg");
 		entrada2D = parent.loadImage("img/entrada.jpg");

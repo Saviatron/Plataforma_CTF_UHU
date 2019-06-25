@@ -53,8 +53,8 @@ public class Posicion {
 		return this.X == o.X && this.Y == o.Y;
 	}
 
-	public String toString() {
-		return "(" + X + "," + Y + ")";
-	}
+//	public String toString() {
+//		return "(" + X + "," + Y + ")";
+//	}
 
 }
