@@ -28,11 +28,11 @@ public class EscribirFichero {
 	Boolean fin = false;
 
 	public EscribirFichero(String filename) {
-		File directionTemp = new File("./Partidas");
-		// Make Folder
-		if (!directionTemp.exists()) {
-			directionTemp.mkdirs();
-		}
+//		File directionTemp = new File("./Partidas");
+//		// Make Folder
+//		if (!directionTemp.exists()) {
+//			directionTemp.mkdirs();
+//		}
 		
 		File aFile = new File(filename + ".txt");
 		int fileNo = 0;

@@ -37,7 +37,7 @@ import juegoCTF.Posicion;
  */
 public class Cerebro implements Config {
 
-	public EscribirFichero partidaTXT = new EscribirFichero("./Partidas/Partida");
+	public EscribirFichero partidaTXT = new EscribirFichero("/var/www/opendatalab/html/aplicaciones/ctf2019/partidas/Partida");
 	public Estadisticas estadisticas = new Estadisticas();
 
 	private Tablero_Lineal tablero;
