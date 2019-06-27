@@ -21,47 +21,12 @@ public class Cerrar extends OneShotBehaviour {
 	@Override
 	public void action() {
 
-		// double empiezo=System.currentTimeMillis();
-		// double limit=10000;
-
-		// try {
-		// AMSAgentDescription[] agents = null;
-		// SearchConstraints c = new SearchConstraints();
-		// c.setMaxResults(new Long(-1));
-		// agents = AMSService.search(myAgent, new AMSAgentDescription(), c);
-		//
-		// for (int i = 0; i < agents.length; i++) {
-		// AID agentID = agents[i].getName();
-		// // if (!agentID.equals(myAgent.getAID()) &&
-		// // !agentID.equals(myAgent.getAMS())
-		// // && !agentID.equals(myAgent.getDefaultDF())) {
-		// System.out.println("Voy a eliminar el agente: " +
-		// agentID.getLocalName());
-		// KillAgent ka = new KillAgent();
-		// ka.setAgent(agentID);
-		// Action a = new Action();
-		// a.setActor(myAgent.getAMS());
-		// a.setAction(ka);
-		//
-		// ACLMessage AMSRequest = new ACLMessage(ACLMessage.REQUEST);
-		// Codec codec = new SLCodec();
-		// myAgent.getContentManager().registerLanguage(codec);
-		// myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
-		// AMSRequest.addReceiver(myAgent.getAMS());
-		// AMSRequest.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-		// AMSRequest.setOntology(JADEManagementOntology.getInstance().getName());
-		// myAgent.getContentManager().fillContent(AMSRequest, a);
-		// myAgent.send(AMSRequest);
-		//
-		// // } else {
-		// // System.out.println("NO voy a eliminar el agente: " +
-		// // agentID.getLocalName());
-		// // }
-		// }
-		// } catch (Exception fe) {
-		// fe.printStackTrace();
-		// }
-		//
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("Empiezo a cerrar...");
 		ACLMessage shutdownMessage = new ACLMessage(ACLMessage.REQUEST);
 		Codec codec = new SLCodec();

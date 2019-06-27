@@ -195,18 +195,6 @@ public class Tick extends TickerBehaviour {
 
 			myAgent.addBehaviour(new Cerrar());
 			myAgent.removeBehaviour(this);
-			// try {
-			// AgentContainer cont = myAgent.getContainerController();
-			// PlatformController pc = cont.getPlatformController();
-			// // cont.kill();
-			// pc.kill();
-			// myAgent.doDelete();
-			// } catch (StaleProxyException e) {
-			// e.printStackTrace();
-			// } catch (ControllerException e) {
-			// e.printStackTrace();
-			// }
-			// System.out.println("Kill...");
 		}
 	}
 
